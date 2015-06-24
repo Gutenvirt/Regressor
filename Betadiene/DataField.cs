@@ -10,7 +10,7 @@ namespace Betadiene
 {
     public class DataField
     {
-        private List<Column> _dblField = new List<Column>();     
+        private List<Column> _dblField = new List<Column>();
 
         private int _indexer = 0;
         private int _length = 0;
@@ -18,44 +18,49 @@ namespace Betadiene
         public int NumberVariables { get { return _indexer; } }
         public int NumberObservations { get { return _length; } }
 
+        public string MsgServer { get; set; }
+        public bool Initialized { get; set; }
+        public int CurrentColumn { get; set; }
+
+        public DataField()
+        {
+            Initialized = true;
+            CurrentColumn = 0;
+        }
+
         public void AddColumn(double[] data, string heading = "V")
         {
             if (heading == "V")
                 heading = "V" + _indexer.ToString();
-            _dblField.Add(new Column(data, heading + "(" + _indexer + ")"));
+            _dblField.Add(new Column(data, heading));
             _indexer++;
             _length = data.GetLength(0);
         }
 
-        public static double[] GetData()
-        {
-            return new double[] { 0, 1, 1 };
-        }
-
         public Column this[int col]
         {
-            get{return _dblField[col];}
+            get { return _dblField[col]; }
         }
 
         public double this[int col, int row]
         {
-            get{return _dblField[col][row];}
+            get { return _dblField[col][row]; }
         }
 
         public double[] ToRegressionArray(int column)
         {
             double[] result = new double[this.NumberObservations];
 
-                for (int j = 0; j < this.NumberObservations; j++)
-                {
-                    result[j] = this[column][j];
-                }
+            for (int j = 0; j < this.NumberObservations; j++)
+            {
+                result[j] = this[column][j];
+            }
             return result;
         }
 
         public double[,] ToRegressionArray(int[] indices)
         {
-            double[,] result = new double[indices.GetLength(0)+1, this.NumberObservations];
+            double[,] result = new double[indices.GetLength(0) + 1, this.NumberObservations];
 
             int count = 1;
             foreach (int col in indices)
@@ -79,7 +84,7 @@ namespace Betadiene
             double[,] tMatrix = new double[this.NumberObservations, this.NumberVariables];
             for (int i = 0; i < this.NumberVariables; i++)
             {
-                for (int j = 0; j < this.NumberObservations ; j++)
+                for (int j = 0; j < this.NumberObservations; j++)
                 {
                     tMatrix[i, j] = this[i][j];
                 }
@@ -90,7 +95,7 @@ namespace Betadiene
         public override string ToString()
         {
             var Output = new StringBuilder();
-            int cellPrecision = 2 ;
+            int cellPrecision = 2;
             int cellLength = cellPrecision * 2 + 4;
 
             string strFormat = "{0," + cellLength.ToString() + ":0." + new string('0', cellPrecision) + "}";
@@ -100,7 +105,10 @@ namespace Betadiene
             Output.Append(jntType.Vertical);
             for (int j = 0; j < _indexer; j++)
             {
-                Output.Append(_dblField[j].Heading.PadLeft(cellLength));
+                if (j == CurrentColumn)
+                    Output.Append((jntType.ThreeWayLeft + _dblField[j].Heading + jntType.ThreeWayRight).PadLeft(cellLength));
+                else
+                    Output.Append(_dblField[j].Heading.PadLeft(cellLength));
             }
             Output.Append(jntType.Vertical + Environment.NewLine);
 
@@ -121,11 +129,15 @@ namespace Betadiene
             return Output.ToString();
         }
 
-        public void FileRead(string filename)
+        public void FileRead(string filename, bool hasHeaders = true)
         {
             StreamReader srFile = new StreamReader(filename);
+            
             var nObs = File.ReadLines(filename).Count();
             var nVars = srFile.ReadLine().Split(',').GetLength(0);
+
+            if (hasHeaders)
+                nObs--;
 
             var dblRawData = new double[nObs, nVars];
 
@@ -133,10 +145,21 @@ namespace Betadiene
             srFile.DiscardBufferedData();
 
             var strBuffer = new string[nVars];
-            int counter = 0;
+            var headerNames = new string[nVars];
 
-            while (!srFile.EndOfStream)
+            if (hasHeaders)
+                headerNames = srFile.ReadLine().Split(',');
+            else
             {
+                for (int m = 0; m < nVars; m++)
+                {
+                    headerNames[m] = "V";
+                }
+            }
+            
+            int counter = 0;
+            while (!srFile.EndOfStream)
+            {                    
                 strBuffer = srFile.ReadLine().Split(',');
                 for (int j = 0; j < nVars; j++)
                     double.TryParse(strBuffer[j], out dblRawData[counter, j]);
@@ -152,8 +175,9 @@ namespace Betadiene
                 {
                     dblTemp[j] = dblRawData[j, i];
                 }
-                this.AddColumn(dblTemp);
+                this.AddColumn(dblTemp, headerNames[i]);
             }
+            MsgServer = NumberObservations + " OBS in " + NumberVariables + " VAR";
         }
     }
 
