@@ -43,6 +43,14 @@
             this.lbMsgServer = new System.Windows.Forms.ListBox();
             this.lbVariables = new System.Windows.Forms.ListBox();
             this.clearScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.frequencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.densityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.percentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.createZScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.descriptiveStatisticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.linearOLSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,7 +96,7 @@
             // loadDataToolStripMenuItem
             // 
             this.loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
-            this.loadDataToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.loadDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loadDataToolStripMenuItem.Text = "Load Data...";
             this.loadDataToolStripMenuItem.Click += new System.EventHandler(this.loadDataToolStripMenuItem_Click);
             // 
@@ -116,12 +124,17 @@
             // 
             // statisticsToolStripMenuItem
             // 
+            this.statisticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.histogramToolStripMenuItem,
+            this.descriptiveStatisticsToolStripMenuItem});
             this.statisticsToolStripMenuItem.Name = "statisticsToolStripMenuItem";
             this.statisticsToolStripMenuItem.Size = new System.Drawing.Size(62, 19);
             this.statisticsToolStripMenuItem.Text = "Analysis";
             // 
             // regressionToolStripMenuItem
             // 
+            this.regressionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.linearOLSToolStripMenuItem});
             this.regressionToolStripMenuItem.Name = "regressionToolStripMenuItem";
             this.regressionToolStripMenuItem.Size = new System.Drawing.Size(76, 19);
             this.regressionToolStripMenuItem.Text = "Regression";
@@ -129,7 +142,9 @@
             // dataToolStripMenuItem
             // 
             this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearScreenToolStripMenuItem});
+            this.clearScreenToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.createZScoreToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 19);
             this.dataToolStripMenuItem.Text = "Data";
@@ -153,6 +168,7 @@
             this.lbVariables.FormattingEnabled = true;
             this.lbVariables.Location = new System.Drawing.Point(994, 26);
             this.lbVariables.Name = "lbVariables";
+            this.lbVariables.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbVariables.Size = new System.Drawing.Size(223, 316);
             this.lbVariables.TabIndex = 5;
             this.lbVariables.SelectedIndexChanged += new System.EventHandler(this.lbVariables_SelectedIndexChanged);
@@ -163,6 +179,63 @@
             this.clearScreenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clearScreenToolStripMenuItem.Text = "Clear Screen";
             this.clearScreenToolStripMenuItem.Click += new System.EventHandler(this.clearScreenToolStripMenuItem_Click);
+            // 
+            // histogramToolStripMenuItem
+            // 
+            this.histogramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.frequencyToolStripMenuItem,
+            this.densityToolStripMenuItem,
+            this.percentToolStripMenuItem});
+            this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
+            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.histogramToolStripMenuItem.Text = "Histogram";
+            // 
+            // frequencyToolStripMenuItem
+            // 
+            this.frequencyToolStripMenuItem.Name = "frequencyToolStripMenuItem";
+            this.frequencyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.frequencyToolStripMenuItem.Text = "Frequency";
+            this.frequencyToolStripMenuItem.Click += new System.EventHandler(this.frequencyToolStripMenuItem_Click);
+            // 
+            // densityToolStripMenuItem
+            // 
+            this.densityToolStripMenuItem.Name = "densityToolStripMenuItem";
+            this.densityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.densityToolStripMenuItem.Text = "Density";
+            this.densityToolStripMenuItem.Click += new System.EventHandler(this.densityToolStripMenuItem_Click);
+            // 
+            // percentToolStripMenuItem
+            // 
+            this.percentToolStripMenuItem.Name = "percentToolStripMenuItem";
+            this.percentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.percentToolStripMenuItem.Text = "Percent";
+            this.percentToolStripMenuItem.Click += new System.EventHandler(this.percentToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+            // 
+            // createZScoreToolStripMenuItem
+            // 
+            this.createZScoreToolStripMenuItem.Name = "createZScoreToolStripMenuItem";
+            this.createZScoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createZScoreToolStripMenuItem.Text = "Create Z-Score";
+            this.createZScoreToolStripMenuItem.Click += new System.EventHandler(this.createZScoreToolStripMenuItem_Click);
+            // 
+            // descriptiveStatisticsToolStripMenuItem
+            // 
+            this.descriptiveStatisticsToolStripMenuItem.Name = "descriptiveStatisticsToolStripMenuItem";
+            this.descriptiveStatisticsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.descriptiveStatisticsToolStripMenuItem.Text = "Descriptive Statistics";
+            this.descriptiveStatisticsToolStripMenuItem.Click += new System.EventHandler(this.descriptiveStatisticsToolStripMenuItem_Click);
+            // 
+            // linearOLSToolStripMenuItem
+            // 
+            this.linearOLSToolStripMenuItem.Name = "linearOLSToolStripMenuItem";
+            this.linearOLSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.linearOLSToolStripMenuItem.Text = "Linear (OLS)";
+            this.linearOLSToolStripMenuItem.Click += new System.EventHandler(this.linearOLSToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -201,6 +274,14 @@
         private System.Windows.Forms.ListBox lbMsgServer;
         private System.Windows.Forms.ListBox lbVariables;
         private System.Windows.Forms.ToolStripMenuItem clearScreenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem histogramToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem frequencyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem densityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem percentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem createZScoreToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem descriptiveStatisticsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem linearOLSToolStripMenuItem;
     }
 }
 

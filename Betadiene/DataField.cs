@@ -20,12 +20,13 @@ namespace Betadiene
 
         public string MsgServer { get; set; }
         public bool Initialized { get; set; }
-        public int CurrentColumn { get; set; }
+        public List<int> SelectedColumns { get; set; }
 
         public DataField()
         {
             Initialized = true;
-            CurrentColumn = 0;
+            SelectedColumns = new List<int>();
+            SelectedColumns.Add(0);
         }
 
         public void AddColumn(double[] data, string heading = "V")
@@ -105,7 +106,7 @@ namespace Betadiene
             Output.Append(jntType.Vertical);
             for (int j = 0; j < _indexer; j++)
             {
-                if (j == CurrentColumn)
+                if (SelectedColumns.Contains(j))
                     Output.Append((jntType.ThreeWayLeft + _dblField[j].Heading + jntType.ThreeWayRight).PadLeft(cellLength));
                 else
                     Output.Append(_dblField[j].Heading.PadLeft(cellLength));
@@ -134,7 +135,12 @@ namespace Betadiene
             StreamReader srFile = new StreamReader(filename);
             
             var nObs = File.ReadLines(filename).Count();
-            var nVars = srFile.ReadLine().Split(',').GetLength(0);
+            
+            var headerNames = srFile.ReadLine().Split(',');
+            var nVars = headerNames.GetLength(0);
+
+            if (headerNames[0].Any(x => char.IsLetter(x)))
+                hasHeaders = true ;
 
             if (hasHeaders)
                 nObs--;
@@ -145,7 +151,6 @@ namespace Betadiene
             srFile.DiscardBufferedData();
 
             var strBuffer = new string[nVars];
-            var headerNames = new string[nVars];
 
             if (hasHeaders)
                 headerNames = srFile.ReadLine().Split(',');

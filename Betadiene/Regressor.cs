@@ -18,10 +18,14 @@ namespace Betadiene
         private static double[] resid;
         private static double[] yHat;
 
+        private static string[] VariableHeadings;
+
         public static double[] Coeff { get { return b; } }
 
-        public static void Initialize(double[] depVar, double[,] indVar)
+        public static void Initialize(double[] depVar, double[,] indVar, string[] headings)
         {
+            VariableHeadings = headings;
+
             nObs = depVar.GetLength(0);
             nVars = indVar.GetLength(0);
 
@@ -54,7 +58,7 @@ namespace Betadiene
             double prevSumSquares = 10;
             double step = 100.0;
 
-            while (Math.Abs(prevSumSquares - sumSquares) > 0.00001)
+            while (Math.Abs(prevSumSquares - sumSquares) > 0.0001)
             {
                 b[varIndex] += step;
                 for (int i = 0; i < nVars; i++)
@@ -69,14 +73,9 @@ namespace Betadiene
                 sumSquares = 0.0;
                 for (int j = 0; j < nObs; j++)
                 {
-
-                    sumSquares += (y[j] - yHat[j]) * (y[j] - yHat[j]);
-                    
-                    /*
                     resid[j] = y[j] - yHat[j];
                     yHat[j] = 0.0;
                     sumSquares += resid[j] * resid[j];
-                     * */
                 }
                 yHat = new double[nObs];
                 if ((prevSumSquares - sumSquares) < 0)
@@ -91,7 +90,7 @@ namespace Betadiene
             string result = string.Empty;
             for (int i =0 ; i < b.GetLength(0); i++)
             {
-                result += "b" + i + "=" + b[i].ToString("0.00") + ",\t";
+                result += VariableHeadings[i] + jntType.Vertical + "b" + i + "=" + b[i].ToString("0.00000") + Environment.NewLine;
             }
             return result;
         }

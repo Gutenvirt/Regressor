@@ -31,49 +31,53 @@ namespace Betadiene
 
         public static string MsgQueue = "";
 
-        public static void Parse(string options)
-        {
-            var _c = new double[] { };
-            var _d = new double[] { };
-            var _t = hType.Frequency;
+        /*
+       public static void Parse(string options)
+       {
+           var _c = new double[] { };
+           var _d = new double[] { };
+           var _t = hType.Frequency;
 
-            string[] optList = options.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+           string[] optList = options.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-            MsgQueue += "BEGIN//" + Environment.NewLine;
+           MsgQueue += "BEGIN//" + Environment.NewLine;
 
-            foreach (string op in optList)
-            {
-                switch (op.Substring(0, 4))
-                {
-                    case "bins":
-                        _c = CommandParser.ConvertStrA2Dbl(CommandParser.ReturnInBrackets(op).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-                        break;
+           foreach (string op in optList)
+           {
+               switch (op.Substring(0, 4))
+               {
+                   case "bins":
+                       _c = CommandParser.ConvertStrA2Dbl(CommandParser.ReturnInBrackets(op).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+                       break;
 
-                    case "freq":
-                        _t = hType.Frequency;
-                        break;
+                   case "freq":
+                       _t = hType.Frequency;
+                       break;
 
-                    case "dens":
-                        _t = hType.Density;
-                        break;
+                   case "dens":
+                       _t = hType.Density;
+                       break;
 
-                    case "perc":
-                        _t = hType.Percent;
-                        break;
+                   case "perc":
+                       _t = hType.Percent;
+                       break;
 
-                    case "data":
-                        _d = CommandParser.ConvertStrA2Dbl(CommandParser.ReturnInBrackets(op).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-                        break;
-                }
-            }
-            double[] outm = GetValues(_t, _c, _d);
+                   case "data":
+                       _d = CommandParser.ConvertStrA2Dbl(CommandParser.ReturnInBrackets(op).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+                       break;
+               }
+           }
+           
+           double[] outm = GetValues(_t, , _d);
 
-            for (int i = 0; i < outm.GetLength(0); i++)
-            {
-                MsgQueue += _c[i] + ": " + outm[i] + Environment.NewLine;
-            }
-            MsgQueue += "END//";
-        }
+           for (int i = 0; i < outm.GetLength(0); i++)
+           {
+               MsgQueue += _c[i] + ": " + outm[i] + Environment.NewLine;
+           }
+           MsgQueue += "END//";
+           
+       }
+        */
 
         public static string Star(double frac)
         {
@@ -86,9 +90,16 @@ namespace Betadiene
             return result;
         }
 
-        public static double[] GetValues(hType type, double[] cutoffs, double[] data)
+        public static double[] GetValues(hType type, double dmin, double dmax, double[] data)
         {
-            Array.Sort(cutoffs);
+            var cutoffs = new double[10];
+            double range = dmax - dmin;
+            double step = range *.1;
+
+            for (int l = 0; l< 10; l++)
+            {
+                cutoffs[l] = l * step + dmin;
+            }
 
             var result = new double[cutoffs.GetLength(0)];
 
