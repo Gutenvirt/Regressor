@@ -16,6 +16,7 @@ namespace Betadiene
         public double Max { get; set; }
         public double StndDev { get; set; }
         public int Size { get; set; }
+        public int UniqueValues { get; set; }
 
 
         public DataDozier(double[] yData)
@@ -27,6 +28,7 @@ namespace Betadiene
             this.Mean = yData.Average();
             this.Variance = CalculateVariance(yData);
             this.StndDev = CalculateStndDev(yData);
+            this.UniqueValues = yData.Distinct().Count();
         }
 
         private double CalculateStndDev(double[] _data)

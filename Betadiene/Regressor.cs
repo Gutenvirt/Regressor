@@ -82,13 +82,12 @@ namespace Betadiene
                     step = step * (-.5);
             }
             return sumSquares;
-
         }
 
         public static string StringOut()
         {
             string result = string.Empty;
-            for (int i =0 ; i < b.GetLength(0); i++)
+            for (int i = 0; i < b.GetLength(0); i++)
             {
                 result += VariableHeadings[i] + jntType.Vertical + "b" + i + "=" + b[i].ToString("0.00000") + Environment.NewLine;
             }

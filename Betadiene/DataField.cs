@@ -15,6 +15,9 @@ namespace Betadiene
         private int _indexer = 0;
         private int _length = 0;
 
+        private int _cellLength = 12;
+        private int _cellPrecision = 4;
+
         public int NumberVariables { get { return _indexer; } }
         public int NumberObservations { get { return _length; } }
 
@@ -26,7 +29,6 @@ namespace Betadiene
         {
             Initialized = true;
             SelectedColumns = new List<int>();
-            SelectedColumns.Add(0);
         }
 
         public void AddColumn(double[] data, string heading = "V")
@@ -93,27 +95,88 @@ namespace Betadiene
             return tMatrix;
         }
 
+        public string CalculateDescriptiveStatistics()
+        {
+            var Output = new StringBuilder();
+
+            string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
+
+            Output.Append(jntType.UpperLeft + new string(jntType.Horizontal , _cellLength ) + jntType.ThreeWayDown  + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.UpperRight + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Unique Obs  " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].UniqueValues)); 
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Minimum     " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].Min));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Mean        " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].Mean));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Maximum     " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].Max));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Sum         " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].Sum));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Variance    " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].Variance));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Std. Dev.   " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat,_dblField[i].StndDev));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+
+            Output.Append(jntType.LowerLeft + new string(jntType.Horizontal , _cellLength ) + jntType.ThreeWayUp  + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.LowerRight + Environment.NewLine);
+
+            return Output.ToString();
+        }
+
         public override string ToString()
         {
             var Output = new StringBuilder();
-            int cellPrecision = 2;
-            int cellLength = cellPrecision * 2 + 4;
 
-            string strFormat = "{0," + cellLength.ToString() + ":0." + new string('0', cellPrecision) + "}";
+            string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
 
-            Output.Append(jntType.UpperLeft + new string(jntType.Horizontal, (_indexer) * cellLength) + jntType.UpperRight + Environment.NewLine);
+            Output.Append(jntType.UpperLeft + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.UpperRight + Environment.NewLine);
 
             Output.Append(jntType.Vertical);
             for (int j = 0; j < _indexer; j++)
             {
                 if (SelectedColumns.Contains(j))
-                    Output.Append((jntType.ThreeWayLeft + _dblField[j].Heading + jntType.ThreeWayRight).PadLeft(cellLength));
+                    Output.Append((jntType.ThreeWayLeft + _dblField[j].Heading + jntType.ThreeWayRight).PadLeft(_cellLength));
                 else
-                    Output.Append(_dblField[j].Heading.PadLeft(cellLength));
+                    Output.Append(_dblField[j].Heading.PadLeft(_cellLength));
             }
             Output.Append(jntType.Vertical + Environment.NewLine);
 
-            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, (_indexer) * cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
+            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
 
             for (int i = 0; i < _length; i++)
             {
@@ -125,7 +188,7 @@ namespace Betadiene
                 Output.Append(jntType.Vertical + Environment.NewLine);
             }
 
-            Output.Append(jntType.LowerLeft + new string(jntType.Horizontal, (_indexer) * cellLength) + jntType.LowerRight + Environment.NewLine);
+            Output.Append(jntType.LowerLeft + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.LowerRight + Environment.NewLine);
 
             return Output.ToString();
         }
@@ -184,12 +247,6 @@ namespace Betadiene
             }
             MsgServer = NumberObservations + " OBS in " + NumberVariables + " VAR";
         }
-    }
-
-    public enum ColumnType
-    {
-        Integer,
-        String
     }
 
     static class jntType

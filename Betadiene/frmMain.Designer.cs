@@ -51,6 +51,7 @@
             this.createZScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.descriptiveStatisticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.linearOLSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -144,7 +145,8 @@
             this.dataToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearScreenToolStripMenuItem,
             this.toolStripMenuItem3,
-            this.createZScoreToolStripMenuItem});
+            this.createZScoreToolStripMenuItem,
+            this.showTableToolStripMenuItem});
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 19);
             this.dataToolStripMenuItem.Text = "Data";
@@ -237,6 +239,13 @@
             this.linearOLSToolStripMenuItem.Text = "Linear (OLS)";
             this.linearOLSToolStripMenuItem.Click += new System.EventHandler(this.linearOLSToolStripMenuItem_Click);
             // 
+            // showTableToolStripMenuItem
+            // 
+            this.showTableToolStripMenuItem.Name = "showTableToolStripMenuItem";
+            this.showTableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showTableToolStripMenuItem.Text = "Show Table";
+            this.showTableToolStripMenuItem.Click += new System.EventHandler(this.showTableToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -282,6 +291,7 @@
         private System.Windows.Forms.ToolStripMenuItem createZScoreToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem descriptiveStatisticsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem linearOLSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showTableToolStripMenuItem;
     }
 }
 
