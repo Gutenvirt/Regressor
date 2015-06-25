@@ -29,24 +29,34 @@ namespace Betadiene
 {
     public class DataDozier
     {
-
-        public double Variance { get; set; }
-        public double Mean { get; set; }
-        public double Sum { get; set; }
-        public double Min { get; set; }
-        public double Max { get; set; }
-        public double StndDev { get; set; }
         public int Size { get; set; }
         public int UniqueValues { get; set; }
-
-
+        
+        public double Min { get; set; }
+        public double Q1 { get; set; }
+        public double Mean { get; set; }
+        public double Median { get; set; }
+        public double Q3 { get; set; }
+        public double Max { get; set; }
+        public double Variance { get; set; }
+        public double Sum { get; set; }
+        public double StndDev { get; set; }
+        
         public DataDozier(double[] yData)
         {
+            var _tData = new double[yData.GetLength(0)];
+            yData.CopyTo(_tData, 0);
+
+            Array.Sort(_tData);
+            
             this.Size = yData.GetLength(0);
-            this.Min = yData.Min();
-            this.Max = yData.Max();
+            this.Min = _tData[0];
+            this.Q1 = this.Size % 2 != 0 ? _tData[this.Size / 4] : (_tData[this.Size / 4] + _tData[this.Size / 4 - 1]) / 2;
+            this.Median= this.Size % 2 != 0 ? _tData[this.Size / 2] : (_tData[this.Size / 2] + _tData[this.Size / 2 - 1]) / 2;
+            this.Q3 = this.Size % 2 != 0 ? _tData[this.Size /4*3] : (_tData[this.Size /4*3] + _tData[this.Size / 4*3 - 1]) / 2;
+            this.Max = _tData[this.Size - 1];
             this.Sum = yData.Sum();
-            this.Mean = yData.Average();
+            this.Mean = this.Sum / this.Size;
             this.Variance = CalculateVariance(yData);
             this.StndDev = CalculateStndDev(yData);
             this.UniqueValues = yData.Distinct().Count();

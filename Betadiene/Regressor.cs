@@ -33,11 +33,17 @@ namespace Betadiene
         private static int nObs;
         private static int nVars;
 
+        private static double yMean;
+
         private static double[,] x;
         private static double[] y;
         private static double[] b;
         private static double[] resid;
         private static double[] yHat;
+
+        private static double[] totalDeviation;
+        private static double[] explainedDeviation;
+        private static double[] unExplainedDeviation;
 
         private static string[] VariableHeadings;
 
@@ -50,12 +56,17 @@ namespace Betadiene
             nObs = depVar.GetLength(0);
             nVars = indVar.GetLength(0);
 
+            yMean = depVar.Average();
+
             x = indVar;
             y = depVar;
 
             b = new double[nVars];
             resid = new double[nObs];
             yHat = new double[nObs];
+
+            explainedDeviation = new double[nObs];
+            unExplainedDeviation = new double[nObs];
 
             double globalSumOfSquares = 0;
             double pGlobalSumOfSquares = 10;
@@ -71,6 +82,7 @@ namespace Betadiene
                 }
                 c2++;
             }
+            //Debug.Write(explainedDeviation.Sum() / (explainedDeviation.Sum() + unExplainedDeviation.Sum()));
         }
 
         private static double Iterate(int varIndex)
@@ -87,6 +99,8 @@ namespace Betadiene
                     for (int j = 0; j < nObs; j++)
                     {
                         yHat[j] += b[i] * x[i, j];
+                        //explainedDeviation[j] = (yHat[j] - yMean) * (yHat[j] - yMean);
+                        //unExplainedDeviation[j] = (y[j] - yHat[j]) *(y[j] - yHat[j]);
                     }
                 }
 

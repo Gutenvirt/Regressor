@@ -69,6 +69,8 @@ namespace Betadiene
             return result;
         }
 
+
+
         public double[] ToArray()
         {
             return _Storage;

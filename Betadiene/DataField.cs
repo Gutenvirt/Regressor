@@ -124,12 +124,15 @@ namespace Betadiene
 
             Output.Append(jntType.UpperLeft + new string(jntType.Horizontal , _cellLength ) + jntType.ThreeWayDown  + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.UpperRight + Environment.NewLine);
 
+
             Output.Append(jntType.Vertical + "Unique Obs  " + jntType.Vertical);
             for (int i = 0; i < _indexer; i++)
             {
                 Output.Append(string.Format(strFormat,_dblField[i].UniqueValues)); 
             }
             Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, _cellLength) + jntType.FourWay + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
 
             Output.Append(jntType.Vertical + "Minimum     " + jntType.Vertical);
             for (int i = 0; i < _indexer; i++)
@@ -138,10 +141,31 @@ namespace Betadiene
             }
             Output.Append(jntType.Vertical + Environment.NewLine);
 
+            Output.Append(jntType.Vertical + "Q1          " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat, _dblField[i].Q1));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
             Output.Append(jntType.Vertical + "Mean        " + jntType.Vertical);
             for (int i = 0; i < _indexer; i++)
             {
-                Output.Append(string.Format(strFormat,_dblField[i].Mean));
+                Output.Append(string.Format(strFormat, _dblField[i].Mean));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Median      " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat, _dblField[i].Median));
+            }
+            Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.Vertical + "Q3          " + jntType.Vertical);
+            for (int i = 0; i < _indexer; i++)
+            {
+                Output.Append(string.Format(strFormat, _dblField[i].Q3));
             }
             Output.Append(jntType.Vertical + Environment.NewLine);
 
@@ -151,6 +175,8 @@ namespace Betadiene
                 Output.Append(string.Format(strFormat,_dblField[i].Max));
             }
             Output.Append(jntType.Vertical + Environment.NewLine);
+
+            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, _cellLength) + jntType.FourWay + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
 
             Output.Append(jntType.Vertical + "Sum         " + jntType.Vertical);
             for (int i = 0; i < _indexer; i++)
