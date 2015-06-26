@@ -45,12 +45,12 @@ namespace Betadiene
 
         public string MsgServer { get; set; }
         public bool Initialized { get; set; }
-        public List<int> SelectedColumns { get; set; }
+        public int[] SelectedColumns { get; set; }
 
         public DataField()
         {
             Initialized = true;
-            SelectedColumns = new List<int>();
+            SelectedColumns = new int[] { };
         }
 
         public void AddColumn(double[] data, string heading = "V")
@@ -113,7 +113,7 @@ namespace Betadiene
             {
                 for (int j = 0; j < this.NumberObservations; j++)
                 {
-                    result[j, col] = this[col][j];
+                    result[j, count] = this[col][j];
                 }
                 count++;
             }
@@ -138,6 +138,19 @@ namespace Betadiene
                 result[9, i] = this[i].StndDev;
             }
 
+            return result;
+        }
+
+        public double[] GetColumnAverages(int[] indices)
+        {
+            var result = new double[NumberVariables];
+
+            int count = 0;
+            foreach (int col in indices)
+            {
+                result[count] = this[col].Mean;
+                count++;
+            }
             return result;
         }
 

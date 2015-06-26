@@ -1,4 +1,25 @@
-﻿using System;
+﻿//
+//  Tabulate.cs
+//
+//  Author:
+//       Christopher Stefancik <gutenvirt@gmail.com>
+//
+//  Copyright (c) 2015 CD Stefancik
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +39,7 @@ namespace Betadiene
             {
                 if (center)
                 {
-                    if (txtData[i].Length > _cellLength-2)
+                    if (txtData[i].Length > _cellLength - 2)
                         txtData[i] = " " + txtData[i][0] + txtData[i].Substring(1, _cellLength - 4) + '~' + txtData[i][txtData[i].Length - 1] + " ";
                     else
                         txtData[i] = new string(' ', (_cellLength - txtData[i].Length) / 2) + txtData[i] + new string(' ', (_cellLength - txtData[i].Length) / 2);
@@ -87,12 +108,15 @@ namespace Betadiene
                 if (rowHeading != null)
                     result.Append(jntType.Vertical + rowHeading[rowCount] + jntType.Vertical);
                 else
-                    result.Append(jntType.Vertical + ((rowCount + 1)+".").ToString().PadRight(_cellLength) + jntType.Vertical);
+                    result.Append(jntType.Vertical + ((rowCount + 1) + ".").ToString().PadRight(_cellLength) + jntType.Vertical);
 
                 int colCount = 0;
                 while (colCount < nCols)
                 {
-                    result.Append(string.Format(strFormat, data[rowCount, colCount]));
+                    if (data[rowCount, colCount] != double.NaN)
+                        result.Append(string.Format(strFormat, data[rowCount, colCount]));
+                    else
+                        result.Append(new string(' ', _cellLength));
                     colCount++;
                 }
                 result.Append(jntType.Vertical + Environment.NewLine);
