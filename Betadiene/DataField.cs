@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Data.Common;
+using System.Diagnostics;
 
 namespace Betadiene
 {
@@ -103,106 +104,51 @@ namespace Betadiene
             return result;
         }
 
-        public double[,] ToArray()
+        public double[,] ToArray(int[] indices)
         {
-            double[,] tMatrix = new double[this.NumberObservations, this.NumberVariables];
-            for (int i = 0; i < this.NumberVariables; i++)
+            double[,] result = new double[this.NumberObservations, indices.Length];
+
+            int count = 0;
+            foreach (int col in indices)
             {
                 for (int j = 0; j < this.NumberObservations; j++)
                 {
-                    tMatrix[i, j] = this[i][j];
+                    result[j, col] = this[col][j];
                 }
+                count++;
             }
-            return tMatrix;
+            return result;
         }
 
-        public string CalculateDescriptiveStatistics()
+        public double[,] CalculateDescriptiveStatistics()
         {
-            var Output = new StringBuilder();
+            double[,] result = new double[10, this.NumberVariables];
 
-            string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
-
-            Output.Append(jntType.UpperLeft + new string(jntType.Horizontal , _cellLength ) + jntType.ThreeWayDown  + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.UpperRight + Environment.NewLine);
-
-
-            Output.Append(jntType.Vertical + "Unique Obs  " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
+            for (int i = 0; i < this.NumberVariables; i++)
             {
-                Output.Append(string.Format(strFormat,_dblField[i].UniqueValues)); 
+                result[0, i] = this[i].UniqueValues;
+                result[1, i] = this[i].Min;
+                result[2, i] = this[i].Q1;
+                result[3, i] = this[i].Mean;
+                result[4, i] = this[i].Median;
+                result[5, i] = this[i].Q3;
+                result[6, i] = this[i].Max;
+                result[7, i] = this[i].Sum;
+                result[8, i] = this[i].Variance;
+                result[9, i] = this[i].StndDev;
             }
-            Output.Append(jntType.Vertical + Environment.NewLine);
 
-            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, _cellLength) + jntType.FourWay + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
+            return result;
+        }
 
-            Output.Append(jntType.Vertical + "Minimum     " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
+        public string[] ReturnColumnHeadings()
+        {
+            var result = new string[NumberVariables];
+            for (int i = 0 ; i < this.NumberVariables ; i++)
             {
-                Output.Append(string.Format(strFormat,_dblField[i].Min));
+                result[i] = this[i].Heading;
             }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Q1          " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat, _dblField[i].Q1));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Mean        " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat, _dblField[i].Mean));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Median      " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat, _dblField[i].Median));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Q3          " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat, _dblField[i].Q3));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Maximum     " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat,_dblField[i].Max));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, _cellLength) + jntType.FourWay + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Sum         " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat,_dblField[i].Sum));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Variance    " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat,_dblField[i].Variance));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.Vertical + "Std. Dev.   " + jntType.Vertical);
-            for (int i = 0; i < _indexer; i++)
-            {
-                Output.Append(string.Format(strFormat,_dblField[i].StndDev));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-
-            Output.Append(jntType.LowerLeft + new string(jntType.Horizontal , _cellLength ) + jntType.ThreeWayUp  + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.LowerRight + Environment.NewLine);
-
-            return Output.ToString();
+            return result;
         }
 
         public override string ToString()
@@ -243,14 +189,14 @@ namespace Betadiene
         public void FileRead(string filename, bool hasHeaders = true)
         {
             StreamReader srFile = new StreamReader(filename);
-            
+
             var nObs = File.ReadLines(filename).Count();
-            
+
             var headerNames = srFile.ReadLine().Split(',');
             var nVars = headerNames.GetLength(0);
 
             if (headerNames[0].Any(x => char.IsLetter(x)))
-                hasHeaders = true ;
+                hasHeaders = true;
 
             if (hasHeaders)
                 nObs--;
@@ -271,10 +217,10 @@ namespace Betadiene
                     headerNames[m] = "V";
                 }
             }
-            
+
             int counter = 0;
             while (!srFile.EndOfStream)
-            {                    
+            {
                 strBuffer = srFile.ReadLine().Split(',');
                 for (int j = 0; j < nVars; j++)
                     double.TryParse(strBuffer[j], out dblRawData[counter, j]);
@@ -294,22 +240,5 @@ namespace Betadiene
             }
             MsgServer = NumberObservations + " OBS in " + NumberVariables + " VAR";
         }
-    }
-
-    static class jntType
-    {
-        public const char Vertical = '│';
-        public const char Horizontal = '─';
-        public const char UpperLeft = '┌';
-        public const char UpperRight = '┐';
-        public const char LowerLeft = '└';
-        public const char LowerRight = '┘';
-        public const char ThreeWayDown = '┬';
-        public const char ThreeWayUp = '┴';
-        public const char ThreeWayLeft = '┤';
-        public const char ThreeWayRight = '├';
-        public const char FourWay = '┼';
-        public const char FullBlock = '█';
-        public const char Emphatic = '*';
     }
 }

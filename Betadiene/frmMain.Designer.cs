@@ -37,21 +37,23 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statisticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.regressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.oFD = new System.Windows.Forms.OpenFileDialog();
-            this.lbMsgServer = new System.Windows.Forms.ListBox();
-            this.lbVariables = new System.Windows.Forms.ListBox();
-            this.clearScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.histogramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.frequencyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.densityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.percentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.descriptiveStatisticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.aNOVAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.regressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.linearOLSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.createZScoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.descriptiveStatisticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.linearOLSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showTableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.oFD = new System.Windows.Forms.OpenFileDialog();
+            this.lbMsgServer = new System.Windows.Forms.ListBox();
+            this.lbVariables = new System.Windows.Forms.ListBox();
             this.mnBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,7 +99,7 @@
             // loadDataToolStripMenuItem
             // 
             this.loadDataToolStripMenuItem.Name = "loadDataToolStripMenuItem";
-            this.loadDataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadDataToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.loadDataToolStripMenuItem.Text = "Load Data...";
             this.loadDataToolStripMenuItem.Click += new System.EventHandler(this.loadDataToolStripMenuItem_Click);
             // 
@@ -127,10 +129,62 @@
             // 
             this.statisticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.histogramToolStripMenuItem,
-            this.descriptiveStatisticsToolStripMenuItem});
+            this.descriptiveStatisticsToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.aNOVAToolStripMenuItem});
             this.statisticsToolStripMenuItem.Name = "statisticsToolStripMenuItem";
             this.statisticsToolStripMenuItem.Size = new System.Drawing.Size(62, 19);
             this.statisticsToolStripMenuItem.Text = "Analysis";
+            // 
+            // histogramToolStripMenuItem
+            // 
+            this.histogramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.frequencyToolStripMenuItem,
+            this.densityToolStripMenuItem,
+            this.percentToolStripMenuItem});
+            this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
+            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.histogramToolStripMenuItem.Text = "Histogram";
+            // 
+            // frequencyToolStripMenuItem
+            // 
+            this.frequencyToolStripMenuItem.Name = "frequencyToolStripMenuItem";
+            this.frequencyToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.frequencyToolStripMenuItem.Text = "Frequency";
+            this.frequencyToolStripMenuItem.Click += new System.EventHandler(this.frequencyToolStripMenuItem_Click);
+            // 
+            // densityToolStripMenuItem
+            // 
+            this.densityToolStripMenuItem.Name = "densityToolStripMenuItem";
+            this.densityToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.densityToolStripMenuItem.Text = "Density";
+            this.densityToolStripMenuItem.Click += new System.EventHandler(this.densityToolStripMenuItem_Click);
+            // 
+            // percentToolStripMenuItem
+            // 
+            this.percentToolStripMenuItem.Name = "percentToolStripMenuItem";
+            this.percentToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.percentToolStripMenuItem.Text = "Percent";
+            this.percentToolStripMenuItem.Click += new System.EventHandler(this.percentToolStripMenuItem_Click);
+            // 
+            // descriptiveStatisticsToolStripMenuItem
+            // 
+            this.descriptiveStatisticsToolStripMenuItem.Name = "descriptiveStatisticsToolStripMenuItem";
+            this.descriptiveStatisticsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.descriptiveStatisticsToolStripMenuItem.Text = "Descriptive Statistics";
+            this.descriptiveStatisticsToolStripMenuItem.Click += new System.EventHandler(this.descriptiveStatisticsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(178, 6);
+            // 
+            // aNOVAToolStripMenuItem
+            // 
+            this.aNOVAToolStripMenuItem.Name = "aNOVAToolStripMenuItem";
+            this.aNOVAToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.aNOVAToolStripMenuItem.Text = "ANOVA - One way";
+            this.aNOVAToolStripMenuItem.Click += new System.EventHandler(this.aNOVAToolStripMenuItem_Click);
             // 
             // regressionToolStripMenuItem
             // 
@@ -139,6 +193,13 @@
             this.regressionToolStripMenuItem.Name = "regressionToolStripMenuItem";
             this.regressionToolStripMenuItem.Size = new System.Drawing.Size(76, 19);
             this.regressionToolStripMenuItem.Text = "Regression";
+            // 
+            // linearOLSToolStripMenuItem
+            // 
+            this.linearOLSToolStripMenuItem.Name = "linearOLSToolStripMenuItem";
+            this.linearOLSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.linearOLSToolStripMenuItem.Text = "Linear (OLS)";
+            this.linearOLSToolStripMenuItem.Click += new System.EventHandler(this.linearOLSToolStripMenuItem_Click);
             // 
             // dataToolStripMenuItem
             // 
@@ -150,6 +211,32 @@
             this.dataToolStripMenuItem.Name = "dataToolStripMenuItem";
             this.dataToolStripMenuItem.Size = new System.Drawing.Size(43, 19);
             this.dataToolStripMenuItem.Text = "Data";
+            // 
+            // clearScreenToolStripMenuItem
+            // 
+            this.clearScreenToolStripMenuItem.Name = "clearScreenToolStripMenuItem";
+            this.clearScreenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearScreenToolStripMenuItem.Text = "Clear Screen";
+            this.clearScreenToolStripMenuItem.Click += new System.EventHandler(this.clearScreenToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+            // 
+            // createZScoreToolStripMenuItem
+            // 
+            this.createZScoreToolStripMenuItem.Name = "createZScoreToolStripMenuItem";
+            this.createZScoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createZScoreToolStripMenuItem.Text = "Create Z-Score";
+            this.createZScoreToolStripMenuItem.Click += new System.EventHandler(this.createZScoreToolStripMenuItem_Click);
+            // 
+            // showTableToolStripMenuItem
+            // 
+            this.showTableToolStripMenuItem.Name = "showTableToolStripMenuItem";
+            this.showTableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showTableToolStripMenuItem.Text = "Show Table";
+            this.showTableToolStripMenuItem.Click += new System.EventHandler(this.showTableToolStripMenuItem_Click);
             // 
             // oFD
             // 
@@ -174,77 +261,6 @@
             this.lbVariables.Size = new System.Drawing.Size(223, 316);
             this.lbVariables.TabIndex = 5;
             this.lbVariables.SelectedIndexChanged += new System.EventHandler(this.lbVariables_SelectedIndexChanged);
-            // 
-            // clearScreenToolStripMenuItem
-            // 
-            this.clearScreenToolStripMenuItem.Name = "clearScreenToolStripMenuItem";
-            this.clearScreenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.clearScreenToolStripMenuItem.Text = "Clear Screen";
-            this.clearScreenToolStripMenuItem.Click += new System.EventHandler(this.clearScreenToolStripMenuItem_Click);
-            // 
-            // histogramToolStripMenuItem
-            // 
-            this.histogramToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.frequencyToolStripMenuItem,
-            this.densityToolStripMenuItem,
-            this.percentToolStripMenuItem});
-            this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
-            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.histogramToolStripMenuItem.Text = "Histogram";
-            // 
-            // frequencyToolStripMenuItem
-            // 
-            this.frequencyToolStripMenuItem.Name = "frequencyToolStripMenuItem";
-            this.frequencyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.frequencyToolStripMenuItem.Text = "Frequency";
-            this.frequencyToolStripMenuItem.Click += new System.EventHandler(this.frequencyToolStripMenuItem_Click);
-            // 
-            // densityToolStripMenuItem
-            // 
-            this.densityToolStripMenuItem.Name = "densityToolStripMenuItem";
-            this.densityToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.densityToolStripMenuItem.Text = "Density";
-            this.densityToolStripMenuItem.Click += new System.EventHandler(this.densityToolStripMenuItem_Click);
-            // 
-            // percentToolStripMenuItem
-            // 
-            this.percentToolStripMenuItem.Name = "percentToolStripMenuItem";
-            this.percentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.percentToolStripMenuItem.Text = "Percent";
-            this.percentToolStripMenuItem.Click += new System.EventHandler(this.percentToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
-            // 
-            // createZScoreToolStripMenuItem
-            // 
-            this.createZScoreToolStripMenuItem.Name = "createZScoreToolStripMenuItem";
-            this.createZScoreToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.createZScoreToolStripMenuItem.Text = "Create Z-Score";
-            this.createZScoreToolStripMenuItem.Click += new System.EventHandler(this.createZScoreToolStripMenuItem_Click);
-            // 
-            // descriptiveStatisticsToolStripMenuItem
-            // 
-            this.descriptiveStatisticsToolStripMenuItem.Name = "descriptiveStatisticsToolStripMenuItem";
-            this.descriptiveStatisticsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.descriptiveStatisticsToolStripMenuItem.Text = "Descriptive Statistics";
-            this.descriptiveStatisticsToolStripMenuItem.Click += new System.EventHandler(this.descriptiveStatisticsToolStripMenuItem_Click);
-            // 
-            // linearOLSToolStripMenuItem
-            // 
-            this.linearOLSToolStripMenuItem.Name = "linearOLSToolStripMenuItem";
-            this.linearOLSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.linearOLSToolStripMenuItem.Text = "Linear (OLS)";
-            this.linearOLSToolStripMenuItem.Click += new System.EventHandler(this.linearOLSToolStripMenuItem_Click);
-            // 
-            // showTableToolStripMenuItem
-            // 
-            this.showTableToolStripMenuItem.Name = "showTableToolStripMenuItem";
-            this.showTableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.showTableToolStripMenuItem.Text = "Show Table";
-            this.showTableToolStripMenuItem.Click += new System.EventHandler(this.showTableToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -292,6 +308,8 @@
         private System.Windows.Forms.ToolStripMenuItem descriptiveStatisticsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem linearOLSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showTableToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem aNOVAToolStripMenuItem;
     }
 }
 

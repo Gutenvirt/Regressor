@@ -64,7 +64,7 @@ namespace Betadiene
 
         private double CalculateStndDev(double[] _data)
         {
-            return Math.Sqrt(this.Variance / Size);
+            return Math.Sqrt(this.Variance);
         }
 
         private double CalculateVariance(double[] _data)
@@ -74,8 +74,8 @@ namespace Betadiene
             {
                 result += (_data[i] - this.Mean) * (_data[i] - this.Mean);
             }
-            result = result / (this.Size - 1);
-            return result;
+
+            return result / (this.Size - 1);
         }
 
     }
