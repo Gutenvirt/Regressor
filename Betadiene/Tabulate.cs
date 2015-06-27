@@ -29,8 +29,6 @@ namespace Betadiene
 {
     public static class Tabulate
     {
-        static int _cellLength = 12;
-        static int _cellPrecision = 4;
         static string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
 
         public static string[] Truncate(string[] txtData, bool center = false)

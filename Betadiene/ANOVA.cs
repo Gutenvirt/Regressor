@@ -82,11 +82,13 @@ namespace Betadiene
             outD[1, 2] = SSWithin / outD[1, 1];
 
             outD[0, 3] = outD[0, 2] / outD[1, 2];
+
+            Debug.Write(outD[1, 3]);
             
             var cHead = new string[] { "Sum of Squares", "Degrees of Freedom", "Mean Square", "F Ratio" };
-            var rHead = new string[] { "Source", "Between", "Within", "Total" };
+            var rHead = new string[] { "Between", "Within", "Total" };
 
-            return Tabulate.CreateTable(outD, cHead, rHead, "ANOVA - One Way", false);
+            return Tabulate.CreateTable(outD, cHead, rHead, "ANOVA - One Way", true);
         }
 
 

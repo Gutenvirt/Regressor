@@ -54,6 +54,7 @@
             this.oFD = new System.Windows.Forms.OpenFileDialog();
             this.lbMsgServer = new System.Windows.Forms.ListBox();
             this.lbVariables = new System.Windows.Forms.ListBox();
+            this.correlationCoefficientsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnBar.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,7 +62,7 @@
             // 
             this.txtOut.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.txtOut.Font = new System.Drawing.Font("Lucida Console", 10F);
+            this.txtOut.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOut.Location = new System.Drawing.Point(12, 27);
             this.txtOut.Multiline = true;
             this.txtOut.Name = "txtOut";
@@ -131,7 +132,8 @@
             this.histogramToolStripMenuItem,
             this.descriptiveStatisticsToolStripMenuItem,
             this.toolStripMenuItem4,
-            this.aNOVAToolStripMenuItem});
+            this.aNOVAToolStripMenuItem,
+            this.correlationCoefficientsToolStripMenuItem});
             this.statisticsToolStripMenuItem.Name = "statisticsToolStripMenuItem";
             this.statisticsToolStripMenuItem.Size = new System.Drawing.Size(62, 19);
             this.statisticsToolStripMenuItem.Text = "Analysis";
@@ -143,7 +145,7 @@
             this.densityToolStripMenuItem,
             this.percentToolStripMenuItem});
             this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
-            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.histogramToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.histogramToolStripMenuItem.Text = "Histogram";
             // 
             // frequencyToolStripMenuItem
@@ -170,19 +172,19 @@
             // descriptiveStatisticsToolStripMenuItem
             // 
             this.descriptiveStatisticsToolStripMenuItem.Name = "descriptiveStatisticsToolStripMenuItem";
-            this.descriptiveStatisticsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.descriptiveStatisticsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.descriptiveStatisticsToolStripMenuItem.Text = "Descriptive Statistics";
             this.descriptiveStatisticsToolStripMenuItem.Click += new System.EventHandler(this.descriptiveStatisticsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(178, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(196, 6);
             // 
             // aNOVAToolStripMenuItem
             // 
             this.aNOVAToolStripMenuItem.Name = "aNOVAToolStripMenuItem";
-            this.aNOVAToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.aNOVAToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.aNOVAToolStripMenuItem.Text = "ANOVA - One way";
             this.aNOVAToolStripMenuItem.Click += new System.EventHandler(this.aNOVAToolStripMenuItem_Click);
             // 
@@ -197,7 +199,7 @@
             // linearOLSToolStripMenuItem
             // 
             this.linearOLSToolStripMenuItem.Name = "linearOLSToolStripMenuItem";
-            this.linearOLSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.linearOLSToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.linearOLSToolStripMenuItem.Text = "Linear (OLS)";
             this.linearOLSToolStripMenuItem.Click += new System.EventHandler(this.linearOLSToolStripMenuItem_Click);
             // 
@@ -262,6 +264,13 @@
             this.lbVariables.TabIndex = 5;
             this.lbVariables.SelectedIndexChanged += new System.EventHandler(this.lbVariables_SelectedIndexChanged);
             // 
+            // correlationCoefficientsToolStripMenuItem
+            // 
+            this.correlationCoefficientsToolStripMenuItem.Name = "correlationCoefficientsToolStripMenuItem";
+            this.correlationCoefficientsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.correlationCoefficientsToolStripMenuItem.Text = "Correlation Coefficients";
+            this.correlationCoefficientsToolStripMenuItem.Click += new System.EventHandler(this.correlationCoefficientsToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +319,7 @@
         private System.Windows.Forms.ToolStripMenuItem showTableToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem aNOVAToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem correlationCoefficientsToolStripMenuItem;
     }
 }
 

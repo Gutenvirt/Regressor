@@ -37,19 +37,14 @@ namespace Betadiene
         private int _indexer = 0;
         private int _length = 0;
 
-        private int _cellLength = 12;
-        private int _cellPrecision = 4;
-
         public int NumberVariables { get { return _indexer; } }
         public int NumberObservations { get { return _length; } }
 
         public string MsgServer { get; set; }
-        public bool Initialized { get; set; }
         public int[] SelectedColumns { get; set; }
 
         public DataField()
         {
-            Initialized = true;
             SelectedColumns = new int[] { };
         }
 
@@ -162,41 +157,6 @@ namespace Betadiene
                 result[i] = this[i].Heading;
             }
             return result;
-        }
-
-        public override string ToString()
-        {
-            var Output = new StringBuilder();
-
-            string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
-
-            Output.Append(jntType.UpperLeft + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.UpperRight + Environment.NewLine);
-
-            Output.Append(jntType.Vertical);
-            for (int j = 0; j < _indexer; j++)
-            {
-                if (SelectedColumns.Contains(j))
-                    Output.Append((jntType.ThreeWayLeft + _dblField[j].Heading + jntType.ThreeWayRight).PadLeft(_cellLength));
-                else
-                    Output.Append(_dblField[j].Heading.PadLeft(_cellLength));
-            }
-            Output.Append(jntType.Vertical + Environment.NewLine);
-
-            Output.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
-
-            for (int i = 0; i < _length; i++)
-            {
-                Output.Append(jntType.Vertical);
-                for (int j = 0; j < _indexer; j++)
-                {
-                    Output.Append(string.Format(strFormat, _dblField[j][i]));
-                }
-                Output.Append(jntType.Vertical + Environment.NewLine);
-            }
-
-            Output.Append(jntType.LowerLeft + new string(jntType.Horizontal, (_indexer) * _cellLength) + jntType.LowerRight + Environment.NewLine);
-
-            return Output.ToString();
         }
 
         public void FileRead(string filename, bool hasHeaders = true)
