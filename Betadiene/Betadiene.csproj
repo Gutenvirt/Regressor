@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="ANOVA.cs" />
     <Compile Include="CommandParser.cs" />
-    <Compile Include="DataDozier.cs" />
     <Compile Include="DataField.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

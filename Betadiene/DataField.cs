@@ -43,6 +43,12 @@ namespace Betadiene
         public string MsgServer { get; set; }
         public int[] SelectedColumns { get; set; }
 
+        //public string[] ColumnHeadings { get; set; }
+
+        //public double[] ColumnMeans { get; set; }
+
+        //add property missing data points
+
         public DataField()
         {
             SelectedColumns = new int[] { };
@@ -115,6 +121,16 @@ namespace Betadiene
             return result;
         }
 
+        public Column[] ToField(int[] indices)
+        {
+            Column[] result = new Column[indices.Length];
+            for (int i = 0; i < indices.Length; i++)
+            {
+                result[i] = this[indices[i]];
+            }
+            return result;
+        }
+
         public double[,] CalculateDescriptiveStatistics()
         {
             double[,] result = new double[10, this.NumberVariables];
@@ -149,12 +165,12 @@ namespace Betadiene
             return result;
         }
 
-        public string[] ReturnColumnHeadings()
+        public string[] ReturnColumnHeadings(int[] indices)
         {
-            var result = new string[NumberVariables];
-            for (int i = 0 ; i < this.NumberVariables ; i++)
+            var result = new string[indices.Length];
+            for (int i = 0 ; i < indices.Length ; i++)
             {
-                result[i] = this[i].Heading;
+                result[i] = this[indices[i]].Heading;
             }
             return result;
         }
