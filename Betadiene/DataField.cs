@@ -42,26 +42,31 @@ namespace Betadiene
 
         public string MsgServer { get; set; }
         public int[] SelectedColumns { get; set; }
+        public int[] AllColumns { get; set; }
 
-        //public string[] ColumnHeadings { get; set; }
-
-        //public double[] ColumnMeans { get; set; }
+        public Dictionary<String, int> VariableList = new Dictionary<string, int>();
 
         //add property missing data points
 
         public DataField()
         {
             SelectedColumns = new int[] { };
+            AllColumns = new int[] { };
         }
 
-        public void AddColumn(double[] data, string heading = "V")
+        public void AddColumn(double[] data, string heading = "v")
         {
-            if (heading == "V")
-                heading = "V" + _indexer.ToString();
-            _dblField.Add(new Column(data, heading));
+            if (heading == "v")
+                heading = "v" + _indexer.ToString();
+            _dblField.Add(new Column(data, heading.ToLower()));
+            
+            VariableList.Add(heading.ToLower(), _indexer);
+
             _indexer++;
             _length = data.GetLength(0);
         }
+
+        //add remove column
 
         public Column this[int col]
         {
@@ -73,40 +78,11 @@ namespace Betadiene
             get { return _dblField[col][row]; }
         }
 
-        public double[] ToRegressionArray(int column)
-        {
-            double[] result = new double[this.NumberObservations];
-
-            for (int j = 0; j < this.NumberObservations; j++)
-            {
-                result[j] = this[column][j];
-            }
-            return result;
-        }
-
-        public double[,] ToRegressionArray(int[] indices)
-        {
-            double[,] result = new double[indices.GetLength(0) + 1, this.NumberObservations];
-
-            int count = 1;
-            foreach (int col in indices)
-            {
-                for (int j = 0; j < this.NumberObservations; j++)
-                {
-                    result[count, j] = this[col][j];
-                }
-                count++;
-            }
-            for (int i = 0; i < this.NumberObservations; i++)
-            {
-                result[0, i] = 1;
-            }
-
-            return result;
-        }
-
         public double[,] ToArray(int[] indices)
         {
+            if (indices.Length == 0)
+                indices = AllColumns;
+
             double[,] result = new double[this.NumberObservations, indices.Length];
 
             int count = 0;
@@ -123,6 +99,9 @@ namespace Betadiene
 
         public Column[] ToField(int[] indices)
         {
+            if (indices.Length == 0)
+                indices = AllColumns;
+
             Column[] result = new Column[indices.Length];
             for (int i = 0; i < indices.Length; i++)
             {
@@ -131,22 +110,25 @@ namespace Betadiene
             return result;
         }
 
-        public double[,] CalculateDescriptiveStatistics()
+        public double[,] Describe(int[] indices)
         {
-            double[,] result = new double[10, this.NumberVariables];
+            if (indices.Length == 0)
+                indices = AllColumns;
 
-            for (int i = 0; i < this.NumberVariables; i++)
+            double[,] result = new double[10, indices.Length];
+
+            for (int i = 0; i < indices.Length; i++)
             {
-                result[0, i] = this[i].UniqueValues;
-                result[1, i] = this[i].Min;
-                result[2, i] = this[i].Q1;
-                result[3, i] = this[i].Mean;
-                result[4, i] = this[i].Median;
-                result[5, i] = this[i].Q3;
-                result[6, i] = this[i].Max;
-                result[7, i] = this[i].Sum;
-                result[8, i] = this[i].Variance;
-                result[9, i] = this[i].StndDev;
+                result[0, i] = this[indices[i]].UniqueValues;
+                result[1, i] = this[indices[i]].Min;
+                result[2, i] = this[indices[i]].Q1;
+                result[3, i] = this[indices[i]].Mean;
+                result[4, i] = this[indices[i]].Median;
+                result[5, i] = this[indices[i]].Q3;
+                result[6, i] = this[indices[i]].Max;
+                result[7, i] = this[indices[i]].Sum;
+                result[8, i] = this[indices[i]].Variance;
+                result[9, i] = this[indices[i]].StndDev;
             }
 
             return result;
@@ -167,21 +149,29 @@ namespace Betadiene
 
         public string[] ReturnColumnHeadings(int[] indices)
         {
+            if (indices.Length == 0)
+                indices = AllColumns;
+
             var result = new string[indices.Length];
-            for (int i = 0 ; i < indices.Length ; i++)
+            for (int i = 0; i < indices.Length; i++)
             {
                 result[i] = this[indices[i]].Heading;
             }
             return result;
         }
 
-        public void FileRead(string filename, bool hasHeaders = true)
+        public void FileRead(string filename, bool hasHeaders)
         {
+            char delimiter = ',';
+
+            if (filename.EndsWith(".txt"))
+                delimiter = '\t';
+
             StreamReader srFile = new StreamReader(filename);
 
             var nObs = File.ReadLines(filename).Count();
 
-            var headerNames = srFile.ReadLine().Split(',');
+            var headerNames = srFile.ReadLine().Split(delimiter);
             var nVars = headerNames.GetLength(0);
 
             if (headerNames[0].Any(x => char.IsLetter(x)))
@@ -198,19 +188,19 @@ namespace Betadiene
             var strBuffer = new string[nVars];
 
             if (hasHeaders)
-                headerNames = srFile.ReadLine().Split(',');
+                headerNames = srFile.ReadLine().Split(delimiter);
             else
             {
                 for (int m = 0; m < nVars; m++)
                 {
-                    headerNames[m] = "V";
+                    headerNames[m] = "v";
                 }
             }
 
             int counter = 0;
             while (!srFile.EndOfStream)
             {
-                strBuffer = srFile.ReadLine().Split(',');
+                strBuffer = srFile.ReadLine().Split(delimiter);
                 for (int j = 0; j < nVars; j++)
                     double.TryParse(strBuffer[j], out dblRawData[counter, j]);
                 counter++;

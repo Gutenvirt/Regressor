@@ -30,15 +30,16 @@ namespace Betadiene
 {
     public static class ANOVA
     {
-        public static double grandMean = 0;
-        public static double grandStdDev = 0;
-        public static double grandVariance = 0;
-        public static double SSTotal = 0;
-        public static double SSBetween = 0;
-        public static double SSWithin = 0;
 
         public static string OneWay(double[,] data, double[] means)
         {
+            double grandMean = 0;
+            double grandStdDev = 0;
+            double grandVariance = 0;
+            double SSTotal = 0;
+            double SSBetween = 0;
+            double SSWithin = 0;
+
             int _numVar = data.GetLength(1);
             int _numObs = data.GetLength(0);
 
@@ -73,19 +74,22 @@ namespace Betadiene
             outD[0, 0] = SSBetween;
             outD[1, 0] = SSWithin;
             outD[2, 0] = SSTotal;
-            
+
             outD[0, 1] = _numVar - 1;
-            outD[1, 1] = _numObs*_numVar - _numVar;
-            outD[2, 1] = _numObs*_numVar - 1;
+            outD[1, 1] = _numObs * _numVar - _numVar;
+            outD[2, 1] = _numObs * _numVar - 1;
 
             outD[0, 2] = SSBetween / outD[0, 1];
             outD[1, 2] = SSWithin / outD[1, 1];
+            outD[2, 2] = double.NaN;
 
             outD[0, 3] = outD[0, 2] / outD[1, 2];
+            outD[1, 3] = double.NaN;
+            outD[2, 3] = double.NaN;
 
             Debug.Write(outD[1, 3]);
-            
-            var cHead = new string[] { "Sum of Squares", "Degrees of Freedom", "Mean Square", "F Ratio" };
+
+            var cHead = new string[] { "SS", "DF", "MS", "F Ratio" };
             var rHead = new string[] { "Between", "Within", "Total" };
 
             return Tabulate.CreateTable(outD, cHead, rHead, "ANOVA - One Way", true);

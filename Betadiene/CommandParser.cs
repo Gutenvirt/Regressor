@@ -33,9 +33,8 @@ namespace Betadiene
 
         public static List<string> cmdList = new List<string>();
 
-        public static void Parse(string comBuffer)
+        public static void Tokenize(string comBuffer)
         {
-
             string[] cmd = comBuffer.Split(new char[] { ' ', ',', ':' }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < cmd.GetLength(0); i++)
@@ -44,9 +43,9 @@ namespace Betadiene
             }
         }
 
-        public static string ReturnInBrackets(string s)
+        public static string ReturnInParens(string s)
         {
-            return s.Substring(s.IndexOf('{') + 1, s.IndexOf('}') - s.IndexOf('{') - 1);
+            return s.Substring(s.IndexOf('(') + 1, s.IndexOf(')') - s.IndexOf('(') - 1);
 
         }
 

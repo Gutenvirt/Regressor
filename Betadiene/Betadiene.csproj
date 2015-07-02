@@ -45,13 +45,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ANOVA.cs" />
+    <Compile Include="ColumnGen.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="DataField.cs" />
+    <Compile Include="FileIO.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGenColumnDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGenColumnDialog.Designer.cs">
+      <DependentUpon>frmGenColumnDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Histogram.cs" />
     <Compile Include="jntType.cs" />
@@ -64,6 +72,9 @@
     <Compile Include="Tabulate.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGenColumnDialog.resx">
+      <DependentUpon>frmGenColumnDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

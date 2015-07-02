@@ -9,7 +9,7 @@ namespace Betadiene
 {
     public static class StatsLib
     {
-        public static double Correlation(double [] col1, double [] col2)
+        public static double Correlation(double[] col1, double[] col2)
         {
             if (col1.Length != col2.Length)
                 return double.NaN;
@@ -50,22 +50,69 @@ namespace Betadiene
         }
 
 
-        /*
-        public delegate double rFunc(double arg);
-
-        public static double h = 10e-6;
-
-        public static double Derivative(rFunc f, double x)
+        public static double[] OLS(Column y, Column[] x)
         {
-            double h2 = h * 2;
-            return (f(x - h2) - 8 * f(x - h) + 8 * f(x + h) - f(x + h2)) / (h2 * 6);
+            int nObs = y.Size;
+            int nVars = x.Length;
+
+            double[] b = new double[nVars + 1];
+            double[] resid = new double[nObs];
+            double[] yHat = new double[nObs];
+
+            double sumSquares = 0;
+            double prevSumSquares = 10;
+            double step = 100.0;
+
+            //set inital b values
+            for (int h = 0; h < nVars; h++)
+            {
+                b[h] = x[h].Mean;
+            }
+            b[nVars] = y.Mean;
+
+            step = y.Mean;
+            int varCnt = 0;
+            int cnt = 0;
+            while (cnt < 100)
+            {
+                cnt++;
+                while (prevSumSquares - sumSquares > .00001)
+                {
+                    b[varCnt] += step;
+
+                    sumSquares = 0.0;
+                    for (int i = 0; i < nObs; i++)
+                    {
+                        for (int j = 0; j < nVars + 1; j++)
+                        {
+                            if (j < nVars)
+                                yHat[i] += b[j] * x[j][i];
+                            else
+                                yHat[i] += b[j];
+                        }
+                        resid[i] = y[i] - yHat[i];
+                        sumSquares += resid[i] * resid[i];
+                    }
+
+                    if (prevSumSquares < sumSquares)
+                        step = step * (-.5);
+
+                    prevSumSquares = sumSquares;
+                }
+                varCnt++;
+                if (varCnt == nVars+1)
+                    varCnt = 0;
+            }
+
+
+            //set coeff in output
+            var result = new double[nVars + 1];
+            for (int i = 0; i < nVars + 1; i++)
+            {
+                result[i] = b[i];
+            }
+
+            return result;
         }
-
-        public static double nDerivative(double[] data,double centeredx ,double dx = 1.0)
-    {
-        return (data[i+1]-data[i-1])/2/h;
-    }
-        */
-
     }
 }

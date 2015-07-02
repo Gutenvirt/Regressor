@@ -96,11 +96,11 @@ namespace Betadiene
 
 
             //Heading
-            result.Append(jntType.UpperLeft + new string(jntType.Horizontal, _recordLabel) + jntType.ThreeWayDown + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.UpperRight + Environment.NewLine);
+            result.Append(new string(' ', _recordLabel+1) + jntType.UpperLeft + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.UpperRight + Environment.NewLine);
 
             if (colHeading != null)
             {
-                result.Append(jntType.Vertical + new string(' ', _recordLabel) + jntType.Vertical);
+                result.Append(new string(' ', _recordLabel+1) + jntType.Vertical);
                 int colCount = 0;
                 while (colCount < nCols)
                 {
@@ -108,7 +108,7 @@ namespace Betadiene
                     colCount++;
                 }
                 result.Append(jntType.Vertical + Environment.NewLine);
-                result.Append(jntType.ThreeWayRight + new string(jntType.Horizontal, _recordLabel) + jntType.FourWay + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
+                result.Append(jntType.UpperLeft + new string(jntType.Horizontal, _recordLabel) + jntType.FourWay + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
             }
 
             //Rows
