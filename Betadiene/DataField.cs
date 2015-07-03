@@ -40,7 +40,7 @@ namespace Betadiene
         public int NumberVariables { get { return _indexer; } }
         public int NumberObservations { get { return _length; } }
 
-        public string MsgServer { get; set; }
+        public string MsgServer { get; set; } //convert to voids to boolean and report here
         public int[] SelectedColumns { get; set; }
         public int[] AllColumns { get; set; }
 
@@ -66,7 +66,19 @@ namespace Betadiene
             _length = data.GetLength(0);
         }
 
-        //add remove column
+        public void drop(int[] indices)
+        {
+            if (indices.Length == 0)
+                return;
+
+            foreach (int i in indices)
+            {
+                VariableList.Remove(this[i].Heading);
+                
+                _dblField.RemoveAt(i);
+                _indexer--;
+            }
+        }
 
         public Column this[int col]
         {

@@ -169,21 +169,18 @@
             this.frequencyToolStripMenuItem.Name = "frequencyToolStripMenuItem";
             this.frequencyToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.frequencyToolStripMenuItem.Text = "Frequency";
-            this.frequencyToolStripMenuItem.Click += new System.EventHandler(this.frequencyToolStripMenuItem_Click);
             // 
             // densityToolStripMenuItem
             // 
             this.densityToolStripMenuItem.Name = "densityToolStripMenuItem";
             this.densityToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.densityToolStripMenuItem.Text = "Density";
-            this.densityToolStripMenuItem.Click += new System.EventHandler(this.densityToolStripMenuItem_Click);
             // 
             // percentToolStripMenuItem
             // 
             this.percentToolStripMenuItem.Name = "percentToolStripMenuItem";
             this.percentToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.percentToolStripMenuItem.Text = "Percent";
-            this.percentToolStripMenuItem.Click += new System.EventHandler(this.percentToolStripMenuItem_Click);
             // 
             // descriptiveStatisticsToolStripMenuItem
             // 

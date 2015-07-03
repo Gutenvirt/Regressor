@@ -22,6 +22,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 
 namespace Betadiene
@@ -29,114 +30,105 @@ namespace Betadiene
     public static class Histogram
     {
 
-        public static string MsgQueue = "";
-
-        /*
-       public static void Parse(string options)
-       {
-           var _c = new double[] { };
-           var _d = new double[] { };
-           var _t = hType.Frequency;
-
-           string[] optList = options.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-           MsgQueue += "BEGIN//" + Environment.NewLine;
-
-           foreach (string op in optList)
-           {
-               switch (op.Substring(0, 4))
-               {
-                   case "bins":
-                       _c = CommandParser.ConvertStrA2Dbl(CommandParser.ReturnInBrackets(op).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-                       break;
-
-                   case "freq":
-                       _t = hType.Frequency;
-                       break;
-
-                   case "dens":
-                       _t = hType.Density;
-                       break;
-
-                   case "perc":
-                       _t = hType.Percent;
-                       break;
-
-                   case "data":
-                       _d = CommandParser.ConvertStrA2Dbl(CommandParser.ReturnInBrackets(op).Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
-                       break;
-               }
-           }
-           
-           double[] outm = GetValues(_t, , _d);
-
-           for (int i = 0; i < outm.GetLength(0); i++)
-           {
-               MsgQueue += _c[i] + ": " + outm[i] + Environment.NewLine;
-           }
-           MsgQueue += "END//";
-           
-       }
-        */
-
-        public static string Star(double frac)
+        public static string GetValues(hType type, Column[] data, int nBins = 10)
         {
-            string result = "";
+            string sResult = string.Empty;
+            double[] nResult;
 
-            for (int i = 0; i < frac * 10; i++)
+            var cutoffs = new double[nBins];
+
+            double max = data[0].Max;
+            double min = data[0].Min;
+
+            for (int i = 1; i < data.Length ; i++)
             {
-                result += ">";
+                if (data[i].Max > max)
+                    max = data[i].Max;
+                if (data[i].Min < min)
+                    min = data[i].Min;
             }
-            return result;
+
+            double step = (max - min) / nBins;
+
+            for (int l = 0; l < nBins; l++)
+            {
+                cutoffs[l] = l * step + min;
+            }
+
+            foreach (Column col in data )
+            {
+                nResult = new double[nBins];
+
+                for (int i = 0; i < col.Size; i++ )
+                {
+                    if (col[i] > cutoffs[nBins - 1])
+                    {
+                        nResult[nBins - 1]++;
+                        continue;
+                    }
+                    for (int j = 1; j < nBins - 1; j++)
+                    {
+                        if ((col[i] >= cutoffs[j]) && (col[i] < cutoffs[j + 1]))
+                        {
+                            nResult[j]++;
+                            continue;
+                        }
+                    }
+                    if (col[i] < cutoffs[1])
+                    {
+                        nResult[0]++;
+                        continue;
+                    }
+                }
+
+                if (type == hType.Density)
+                {
+                    double divmax = 1.0 / nResult.Max();
+                    for (int i = 0; i < nBins; i++)
+                    {
+                        nResult[i] = nResult[i] * divmax;
+                    }
+                }
+                if (type == hType.Percent)
+                {
+                    double total = 1.0 / data[0].Size;
+                    for (int i = 0; i < nBins; i++)
+                    {
+                        nResult[i] = nResult[i] * total;
+                    }
+                }
+
+                sResult += display(nResult) + Environment.NewLine;
+            }
+            return sResult;
         }
 
-        public static double[] GetValues(hType type, double dmin, double dmax, double[] data)
+        public static string display(double[] data)
         {
-            var cutoffs = new double[10];
-            double range = dmax - dmin;
-            double step = range *.1;
+            var visOut = new StringBuilder();
 
-            for (int l = 0; l< 10; l++)
+            for (int i = 0; i < 10; i++) // down
             {
-                cutoffs[l] = l * step + dmin;
-            }
-
-            var result = new double[cutoffs.GetLength(0)];
-
-            for (int i = 0; i < data.GetLength(0); i++)
-            {
-                for (int j = 0; j < cutoffs.GetLength(0); j++)
+                for (int j = 0; j < 10; j++) // across
                 {
-                    if (j == 0)
+                    if ((int)(10 - data[j] * 10) == i)
                     {
-                        if (data[i] <= cutoffs[j])
-                            result[j] += 1;
+                        visOut.Append(jntType.UpperLeft + new string(jntType.Horizontal, 3) + jntType.UpperRight);
                     }
                     else
                     {
-                        if (data[i] > cutoffs[j - 1] && data[i] <= cutoffs[j])
-                            result[j] += 1;
+                        if (i > 10 - data[j] * 10)
+                            visOut.Append(jntType.Vertical + new string(' ', 3) + jntType.Vertical);
+                        else
+                            visOut.Append(new string(' ', 5));
                     }
                 }
+                visOut.Append(Environment.NewLine);
             }
-            if (type == hType.Density)
-            {
-                double max = 1 / result.Max();
-                for (int i = 0; i < result.GetLength(0); i++)
-                {
-                    result[i] = result[i] * max;
-                }
-            }
-            if (type == hType.Percent)
-            {
-                double total = 1 / (double)data.GetLength(0);
-                for (int i = 0; i < result.GetLength(0); i++)
-                {
-                    result[i] = result[i] * total;
-                }
-            }
-            return result;
+
+            return visOut.ToString();
         }
+
     }
 
     public enum hType
