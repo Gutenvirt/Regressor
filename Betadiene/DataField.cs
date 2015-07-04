@@ -62,6 +62,8 @@ namespace Betadiene
             
             VariableList.Add(heading.ToLower(), _indexer);
 
+            // need to add check for duplicate columns and rename it with a modifier!!!!!!!!!!
+
             _indexer++;
             _length = data.GetLength(0);
         }

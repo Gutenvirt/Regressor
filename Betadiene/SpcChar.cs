@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace Betadiene
 {
-    static class jntType
+    static class SpcChar
     {
         public const char Vertical = '│';
         public const char Horizontal = '─';
@@ -42,5 +42,9 @@ namespace Betadiene
         public const char FourWay = '┼';
         public const char FullBlock = '█';
         public const char Emphatic = '*';
+        public const char Space = ' ';
+        public const char Cross = '×';
+        public const char Dot = '·';
+        public const char Square = '■';
     }
 }

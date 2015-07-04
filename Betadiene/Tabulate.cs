@@ -96,19 +96,19 @@ namespace Betadiene
 
 
             //Heading
-            result.Append(new string(' ', _recordLabel+1) + jntType.UpperLeft + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.UpperRight + Environment.NewLine);
+            result.Append(new string(' ', _recordLabel+1) + SpcChar.UpperLeft + new string(SpcChar.Horizontal, (nCols) * _cellLength) + SpcChar.UpperRight + Environment.NewLine);
 
             if (colHeading != null)
             {
-                result.Append(new string(' ', _recordLabel+1) + jntType.Vertical);
+                result.Append(new string(' ', _recordLabel+1) + SpcChar.Vertical);
                 int colCount = 0;
                 while (colCount < nCols)
                 {
                     result.Append(colHeading[colCount].PadLeft(_cellLength ));
                     colCount++;
                 }
-                result.Append(jntType.Vertical + Environment.NewLine);
-                result.Append(jntType.UpperLeft + new string(jntType.Horizontal, _recordLabel) + jntType.FourWay + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.ThreeWayLeft + Environment.NewLine);
+                result.Append(SpcChar.Vertical + Environment.NewLine);
+                result.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, _recordLabel) + SpcChar.FourWay + new string(SpcChar.Horizontal, (nCols) * _cellLength) + SpcChar.ThreeWayLeft + Environment.NewLine);
             }
 
             //Rows
@@ -116,9 +116,9 @@ namespace Betadiene
             while (rowCount < nRows)
             {
                 if (rowHeading != null)
-                    result.Append(jntType.Vertical + rowHeading[rowCount] + jntType.Vertical);
+                    result.Append(SpcChar.Vertical + rowHeading[rowCount] + SpcChar.Vertical);
                 else
-                    result.Append(jntType.Vertical + ((rowCount + 1) + ".").ToString().PadRight(_recordLabel) + jntType.Vertical);
+                    result.Append(SpcChar.Vertical + ((rowCount + 1) + ".").ToString().PadRight(_recordLabel) + SpcChar.Vertical);
 
                 int colCount = 0;
                 while (colCount < nCols)
@@ -129,11 +129,11 @@ namespace Betadiene
                         result.Append(string.Format(strFormat, data[rowCount, colCount]));
                     colCount++;
                 }
-                result.Append(jntType.Vertical + Environment.NewLine);
+                result.Append(SpcChar.Vertical + Environment.NewLine);
                 rowCount++;
             }
 
-            result.Append(jntType.LowerLeft + new string(jntType.Horizontal, _recordLabel) + jntType.ThreeWayUp + new string(jntType.Horizontal, (nCols) * _cellLength) + jntType.LowerRight + Environment.NewLine);
+            result.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, _recordLabel) + SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, (nCols) * _cellLength) + SpcChar.LowerRight + Environment.NewLine);
 
             return result.ToString();
         }

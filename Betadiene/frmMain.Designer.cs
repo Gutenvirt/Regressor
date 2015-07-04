@@ -338,6 +338,7 @@
             this.txtCmdBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtCmdBox.Size = new System.Drawing.Size(819, 50);
             this.txtCmdBox.TabIndex = 0;
+            this.txtCmdBox.Text = "import c:\\counting.csv";
             this.txtCmdBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCmdBox_KeyUp);
             // 
             // frmMain
