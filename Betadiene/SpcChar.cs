@@ -41,10 +41,14 @@ namespace Betadiene
         public const char ThreeWayRight = '├';
         public const char FourWay = '┼';
         public const char FullBlock = '█';
-        public const char Emphatic = '*';
+        public const char Star = '*';
         public const char Space = ' ';
         public const char Cross = '×';
+        public const char Plus = '+';
         public const char Dot = '·';
         public const char Square = '■';
+        public const char Not = '¬';
+        public const char Dash = '-';
+        public const char Nought = 'ø';
     }
 }

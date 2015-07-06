@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 using System.Data.Common;
 using System.Diagnostics;
 
@@ -54,13 +53,16 @@ namespace Betadiene
             AllColumns = new int[] { };
         }
 
-        public void AddColumn(double[] data, string heading = "v")
+        public void AddColumn(double[] data, string heading = "")
         {
-            if (heading == "v")
-                heading = "v" + _indexer.ToString();
-            _dblField.Add(new Column(data, heading.ToLower()));
+            if (heading == "" | heading == string.Empty)
+                heading = Settings.headingPrefix + _indexer.ToString();
+            _dblField.Add(new Column(data, heading));
             
-            VariableList.Add(heading.ToLower(), _indexer);
+            if (VariableList.ContainsKey(heading))
+                heading += _indexer;
+            
+            VariableList.Add(heading, _indexer);
 
             // need to add check for duplicate columns and rename it with a modifier!!!!!!!!!!
 
@@ -169,69 +171,14 @@ namespace Betadiene
             var result = new string[indices.Length];
             for (int i = 0; i < indices.Length; i++)
             {
-                result[i] = this[indices[i]].Heading;
+                if (this[indices[i]].Sorted)
+                    result[i] = SpcChar.Not + this[indices[i]].Heading;
+                else
+                    result[i] = this[indices[i]].Heading;
             }
             return result;
         }
 
-        public void FileRead(string filename, bool hasHeaders)
-        {
-            char delimiter = ',';
-
-            if (filename.EndsWith(".txt"))
-                delimiter = '\t';
-
-            StreamReader srFile = new StreamReader(filename);
-
-            var nObs = File.ReadLines(filename).Count();
-
-            var headerNames = srFile.ReadLine().Split(delimiter);
-            var nVars = headerNames.GetLength(0);
-
-            if (headerNames[0].Any(x => char.IsLetter(x)))
-                hasHeaders = true;
-
-            if (hasHeaders)
-                nObs--;
-
-            var dblRawData = new double[nObs, nVars];
-
-            srFile.BaseStream.Position = 0;
-            srFile.DiscardBufferedData();
-
-            var strBuffer = new string[nVars];
-
-            if (hasHeaders)
-                headerNames = srFile.ReadLine().Split(delimiter);
-            else
-            {
-                for (int m = 0; m < nVars; m++)
-                {
-                    headerNames[m] = "v";
-                }
-            }
-
-            int counter = 0;
-            while (!srFile.EndOfStream)
-            {
-                strBuffer = srFile.ReadLine().Split(delimiter);
-                for (int j = 0; j < nVars; j++)
-                    double.TryParse(strBuffer[j], out dblRawData[counter, j]);
-                counter++;
-            }
-
-            srFile.Close();
-
-            var dblTemp = new double[nObs];
-            for (int i = 0; i < nVars; i++)
-            {
-                for (int j = 0; j < nObs; j++)
-                {
-                    dblTemp[j] = dblRawData[j, i];
-                }
-                this.AddColumn(dblTemp, headerNames[i]);
-            }
-            MsgServer = NumberObservations + " OBS in " + NumberVariables + " VAR";
-        }
+        
     }
 }

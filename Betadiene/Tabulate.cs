@@ -31,10 +31,8 @@ namespace Betadiene
 
     public static class Tabulate
     {
-        public static int _cellLength = 12;
-        public static int _cellPrecision = 4;
 
-        static string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
+        
 
         public static string[] Truncate(string[] txtData, bool center = false)
         {
@@ -42,17 +40,17 @@ namespace Betadiene
             {
                 if (center)
                 {
-                    if (txtData[i].Length > _cellLength - 1)
-                        txtData[i] = " " + txtData[i][0] + txtData[i].Substring(1, _cellLength - 4) + '~' + txtData[i][txtData[i].Length - 1] + " ";
+                    if (txtData[i].Length > Settings._cellLength - 1)
+                        txtData[i] = " " + txtData[i][0] + txtData[i].Substring(1, Settings._cellLength - 4) + '~' + txtData[i][txtData[i].Length - 1]; // + " ";
                     else
-                        txtData[i] = new string(' ', (_cellLength - txtData[i].Length) / 2) + txtData[i] + new string(' ', (_cellLength - txtData[i].Length) / 2);
+                        txtData[i] = new string(' ', (Settings._cellLength - txtData[i].Length) / 2) + txtData[i] + new string(' ', (Settings._cellLength - txtData[i].Length) / 2);
                 }
                 else
                 {
-                    if (txtData[i].Length > _cellLength)
-                        txtData[i] = txtData[i][0] + txtData[i].Substring(1, _cellLength - 3) + '~' + txtData[i][txtData[i].Length - 1];
+                    if (txtData[i].Length > Settings._cellLength)
+                        txtData[i] = txtData[i][0] + txtData[i].Substring(1, Settings._cellLength - 3) + '~' + txtData[i][txtData[i].Length - 1];
                     else
-                        txtData[i] = txtData[i].PadRight(_cellLength);
+                        txtData[i] = txtData[i].PadRight(Settings._cellLength);
                 }
             }
             return txtData;
@@ -73,7 +71,7 @@ namespace Betadiene
             int nCols = data.GetLength(1);
             int nRows = data.GetLength(0);
 
-            int _recordLabel = _cellLength;
+            int _recordLabel = Settings._cellLength;
 
             if (colHeading != null)
                 colHeading = Truncate(colHeading, true);
@@ -84,9 +82,9 @@ namespace Betadiene
                 _recordLabel = (int)Math.Log10(data.GetLength(0))+3;
         
             if (isFixed)
-                strFormat = "{0," + _cellLength.ToString() + ":0." + new string('0', _cellPrecision) + "}";
+                Settings.strFormat = "{0," + Settings._cellLength.ToString() + ":0." + new string('0', Settings._cellPrecision) + "}";
             else
-                strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
+                Settings.strFormat = "{0," + Settings._cellLength.ToString() + ":0." + new string('#', Settings._cellPrecision) + "}";
 
             var result = new StringBuilder();
 
@@ -96,7 +94,7 @@ namespace Betadiene
 
 
             //Heading
-            result.Append(new string(' ', _recordLabel+1) + SpcChar.UpperLeft + new string(SpcChar.Horizontal, (nCols) * _cellLength) + SpcChar.UpperRight + Environment.NewLine);
+            result.Append(new string(' ', _recordLabel + 1) + SpcChar.UpperLeft + new string(SpcChar.Horizontal, (nCols) * Settings._cellLength) + SpcChar.UpperRight + Environment.NewLine);
 
             if (colHeading != null)
             {
@@ -104,11 +102,11 @@ namespace Betadiene
                 int colCount = 0;
                 while (colCount < nCols)
                 {
-                    result.Append(colHeading[colCount].PadLeft(_cellLength ));
+                    result.Append(colHeading[colCount].PadLeft(Settings._cellLength));
                     colCount++;
                 }
                 result.Append(SpcChar.Vertical + Environment.NewLine);
-                result.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, _recordLabel) + SpcChar.FourWay + new string(SpcChar.Horizontal, (nCols) * _cellLength) + SpcChar.ThreeWayLeft + Environment.NewLine);
+                result.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, _recordLabel) + SpcChar.FourWay + new string(SpcChar.Horizontal, (nCols) * Settings._cellLength) + SpcChar.ThreeWayLeft + Environment.NewLine);
             }
 
             //Rows
@@ -124,16 +122,16 @@ namespace Betadiene
                 while (colCount < nCols)
                 {
                     if (double.IsNaN(data[rowCount, colCount]))
-                        result.Append(new string(' ', _cellLength));
+                        result.Append(new string(' ', Settings._cellLength));
                     else
-                        result.Append(string.Format(strFormat, data[rowCount, colCount]));
+                        result.Append(string.Format(Settings.strFormat, data[rowCount, colCount]));
                     colCount++;
                 }
                 result.Append(SpcChar.Vertical + Environment.NewLine);
                 rowCount++;
             }
 
-            result.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, _recordLabel) + SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, (nCols) * _cellLength) + SpcChar.LowerRight + Environment.NewLine);
+            result.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, _recordLabel) + SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, (nCols) * Settings._cellLength) + SpcChar.LowerRight + Environment.NewLine);
 
             return result.ToString();
         }

@@ -59,17 +59,6 @@ namespace Betadiene
             return result;
         }
 
-        public static double NIntegrate(Column col)
-        {
-            var result = 0.0;
-            for (int i = 0; i < col.Size - 1; i++)
-            {
-                result += (col[i] + col[i + 1]) * .5;
-            }
-            return result;
-        }
-
-
         public static double[] OLS(Column y, Column[] x)
         {
             int nObs = y.Size;

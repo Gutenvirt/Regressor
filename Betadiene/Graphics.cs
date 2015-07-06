@@ -30,10 +30,32 @@ namespace Betadiene
     public static class Graphics
     {
 
-        public static string Scatter (Column xData, Column yData, string ops)
+        public static string CDF(Column Data, string ops)
         {
-            int xSize = 35;
-            int ySize = 15;
+            var xData = new double[Data.Size];
+            var yData = new double[Data.Size];
+
+            Data.ColumnToArray().CopyTo(xData, 0);
+
+            Array.Sort(xData);
+
+            yData[0] = 1.0 / Data.Size;
+            for (int i = 1; i < Data.Size; i++)
+            {
+                yData[i] = yData[i - 1] + yData[0];
+            }
+
+            return Scatter(new Column[] { new Column(xData, "Sorted Data"), new Column(yData, "Percent of Data") }, ops);
+
+        }
+
+        public static string Scatter(Column[] data, string ops)
+        {
+
+
+
+            double size = 1.0;
+            double yline = double.NaN;
 
             if (ops.Length > 5)
             {
@@ -41,42 +63,118 @@ namespace Betadiene
 
                 for (int i = 0; i < oTmp.Length; i++)
                 {
+                    if (oTmp[i].IndexOf("size=") > -1)
+                    {
+                        double.TryParse(oTmp[i].Substring(5, oTmp[i].Length - 5), out size);
+                        Settings.graphHeight = (int)(Settings.graphHeight * size);
+                        Settings.graphWidth = (int)(Settings.graphWidth * size);
+                        continue;
+                    }
                     if (oTmp[i].IndexOf("width=") > -1)
-                        int.TryParse(oTmp[i].Substring(6, oTmp[i].Length - 6), out xSize);
+                    {
+                        int.TryParse(oTmp[i].Substring(6, oTmp[i].Length - 6), out Settings.graphWidth);
+                        continue;
+                    }
                     if (oTmp[i].IndexOf("height=") > -1)
-                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out ySize);
+                    {
+                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out Settings.graphHeight);
+                        continue;
+                    }
+                    if (oTmp[i].IndexOf("yline=") > -1)
+                    {
+                        double.TryParse(oTmp[i].Substring(6, oTmp[i].Length - 6), out yline);
+                        continue;
+                    }
                 }
             }
 
-            double xRatio = (xData.Max - xData.Min) / (xSize-1);
-            double yRatio = (yData.Max - yData.Min) / (ySize-1);
+            int dataSize = data[0].Size;
 
-            char[,] plot = new char[ySize, xSize];
+            // data[0] is y and is separate from these maxs and mins
 
-            for (int i = 0; i < xData.Size; i++)
+            double max = data[1].Max;
+            double min = data[1].Min;
+
+            for (int i = 1; i < data.Length; i++)
             {
-                int ycoord = (int)((yData[i]-yData.Min)/yRatio);
-                int xcoord = (int)((xData[i] - xData.Min) / xRatio);
-
-                plot[ycoord, xcoord] = SpcChar.Cross;
+                if (data[i].Max > max)
+                    max = data[i].Max;
+                if (data[i].Min < min)
+                    min = data[i].Min;
             }
 
+            char[,] plot = new char[Settings.graphHeight, Settings.graphWidth];
+
+            yline = Settings.graphHeight * (yline);
+
+            for (int i = 0; i < Settings.graphWidth; i++) //create grid of null (space) characters
+            {
+                for (int j = 0; j < Settings.graphHeight; j++)
+                {
+                    plot[j, i] = SpcChar.Space;
+                    if (j == (int)(yline))
+                        plot[j, i] = SpcChar.Dot;
+                }
+            }
+
+
+            double[] mappedColX = MathsLib.MapToRange(data[0], 0, Settings.graphWidth - 1);
+
+            for (int h = 1; h < data.Length; h++) //iterate through all columns
+            {
+                double[] mappedColY = MathsLib.MapToRange(data[h], min, max, 0, Settings.graphHeight - 1);
+
+                for (int i = 0; i < dataSize; i++) //map x,y points from columns to grid above
+                {
+                    if (h == 1)
+                        plot[(int)mappedColY[i], (int)mappedColX[i]] = SpcChar.Cross;
+                    if (h == 2)
+                        plot[(int)mappedColY[i], (int)mappedColX[i]] = SpcChar.Plus;
+                    if (h == 3)
+                        plot[(int)mappedColY[i], (int)mappedColX[i]] = SpcChar.Nought;
+                    if (h == 4)
+                        plot[(int)mappedColY[i], (int)mappedColX[i]] = SpcChar.Square;
+                    if (h > 4)
+                        plot[(int)mappedColY[i], (int)mappedColX[i]] = (char)(49 + h);
+
+                }
+            }
+
+            var repDataTally = 0.0;
             var sOut = new StringBuilder();
 
-            for (int i = ySize-1; i > -1; i-- )
+            sOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, Settings.graphWidth) + SpcChar.UpperRight + Environment.NewLine);
+            for (int i = Settings.graphHeight - 1; i > -1; i--)
             {
                 sOut.Append(SpcChar.Vertical);
-                for (int j = 0; j < xSize; j++)
+                for (int j = 0; j < Settings.graphWidth; j++)
                 {
-                    if (plot[i, j] == SpcChar.Cross)
-                        sOut.Append(plot[i, j]);
-                    else
-                        sOut.Append(SpcChar.Space);
+                    sOut.Append(plot[i, j]);
+                    if (plot[i, j] != SpcChar.Space && plot[i, j] != SpcChar.Dot)
+                        repDataTally++;
                 }
-                sOut.Append(Environment.NewLine);
+
+                sOut.Append(SpcChar.Vertical);
+
+                if (i == Settings.graphHeight - 1)
+                    sOut.Append(max.ToString("0.00"));
+
                 if (i == 0)
-                    sOut.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, xSize));
+                    sOut.Append(min.ToString("0.00"));
+
+                sOut.Append(Environment.NewLine);
             }
+
+            sOut.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, Settings.graphWidth) + SpcChar.LowerRight + Environment.NewLine);
+
+            if (Settings.graphWidth > 9)
+                sOut.Append(SpcChar.Space + data[0].Min.ToString("0.00") + new string(SpcChar.Space, Settings.graphWidth - 9) + data[0].Max.ToString("0.00") + Environment.NewLine);
+            else
+                sOut.Append(new string(SpcChar.Space, Settings.graphWidth) + Environment.NewLine);
+
+            repDataTally = repDataTally / (double)((data.Length - 1) * data[0].Size) * 100.0; //two columns per scatter to only 50% is tally.
+
+            sOut.Append(Environment.NewLine + "Data represented: " + repDataTally.ToString("0.00") + "%");
 
             return sOut.ToString();
         }
@@ -84,8 +182,7 @@ namespace Betadiene
 
         public static string Histogram(Column[] data, string ops)
         {
-            int nBins = 10;
-            int height = 10;
+
 
             hType type = hType.Density;
 
@@ -93,14 +190,13 @@ namespace Betadiene
             {
                 string[] oTmp = ops.Split(SpcChar.Space);
 
-                for (int i = 0; i < oTmp.Length; i++ )
+                for (int i = 0; i < oTmp.Length; i++)
                 {
                     if (oTmp[i].IndexOf("bins=") > -1)
-                        int.TryParse(oTmp[i].Substring(5, oTmp[i].Length - 5), out nBins);
+                        int.TryParse(oTmp[i].Substring(5, oTmp[i].Length - 5), out Settings.nBins);
                     if (oTmp[i].IndexOf("height=") > -1)
-                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out height);
-                    
-                    
+                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out Settings.graphHeight);
+
                     //add type percent, density, freq 
                 }
             }
@@ -108,7 +204,7 @@ namespace Betadiene
             string sResult = string.Empty;
             double[] nResult;
 
-            var cutoffs = new double[nBins];
+            var cutoffs = new double[Settings.nBins];
 
             double max = data[0].Max;
             double min = data[0].Min;
@@ -121,33 +217,37 @@ namespace Betadiene
                     min = data[i].Min;
             }
 
-            double step = (max - min) / nBins;
+            double step = (max - min) / Settings.nBins;
 
-            for (int l = 0; l < nBins; l++)
+            for (int l = 0; l < Settings.nBins; l++)
             {
                 cutoffs[l] = l * step + min;
             }
 
-            foreach (Column col in data)
-            {
-                nResult = new double[nBins];
+            var visOut = new StringBuilder();
 
-                for (int i = 0; i < col.Size; i++)
+            visOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, Settings.nBins * 5) + SpcChar.UpperRight + Environment.NewLine);
+
+            for (int h = 0; h < data.Length; h++)
+            {
+                nResult = new double[Settings.nBins];
+
+                for (int i = 0; i < data[h].Size; i++)
                 {
-                    if (col[i] > cutoffs[nBins - 1])
+                    if (data[h][i] > cutoffs[Settings.nBins - 1])
                     {
-                        nResult[nBins - 1]++;
+                        nResult[Settings.nBins - 1]++;
                         continue;
                     }
-                    for (int j = 1; j < nBins - 1; j++)
+                    for (int j = 1; j < Settings.nBins - 1; j++)
                     {
-                        if ((col[i] >= cutoffs[j]) && (col[i] < cutoffs[j + 1]))
+                        if ((data[h][i] >= cutoffs[j]) && (data[h][i] < cutoffs[j + 1]))
                         {
                             nResult[j]++;
                             continue;
                         }
                     }
-                    if (col[i] < cutoffs[1])
+                    if (data[h][i] < cutoffs[1])
                     {
                         nResult[0]++;
                         continue;
@@ -157,7 +257,7 @@ namespace Betadiene
                 if (type == hType.Density)
                 {
                     double divmax = 1.0 / nResult.Max();
-                    for (int i = 0; i < nBins; i++)
+                    for (int i = 0; i < Settings.nBins; i++)
                     {
                         nResult[i] = nResult[i] * divmax;
                     }
@@ -165,51 +265,49 @@ namespace Betadiene
                 if (type == hType.Percent)
                 {
                     double total = 1.0 / data[0].Size;
-                    for (int i = 0; i < nBins; i++)
+                    for (int i = 0; i < Settings.nBins; i++)
                     {
                         nResult[i] = nResult[i] * total;
                     }
                 }
 
-                sResult += col.Heading + Environment.NewLine + RenderHistogram(nResult, nBins, max, height) + Environment.NewLine;
-            }
-            return sResult;
-        }
-
-        public static string RenderHistogram(double[] data, int nBins, double max, int height)
-        {
-            var visOut = new StringBuilder();
-
-            for (int i = 0; i < height; i++) // down
-            {
-                for (int j = 0; j < nBins; j++) // across
+                for (int i = 0; i < Settings.graphHeight; i++) // down
                 {
-                    if ((int)(height - data[j] * height) == i)
+                    visOut.Append(SpcChar.Vertical);
+                    for (int j = 0; j < Settings.nBins; j++) // across
                     {
-                        visOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, 3) + SpcChar.UpperRight);
-                    }
-                    else
-                    {
-                        if (i > height - data[j] * height)
-                            visOut.Append(SpcChar.Vertical + new string(SpcChar.Space, 3) + SpcChar.Vertical);
+                        if ((int)(Settings.graphHeight - nResult[j] * Settings.graphHeight) == i)
+                            visOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, 3) + SpcChar.UpperRight);
                         else
-                            visOut.Append(new string(SpcChar.Space, 5));
+                            if (i > Settings.graphHeight - nResult[j] * Settings.graphHeight)
+                                visOut.Append(SpcChar.Vertical + new string(SpcChar.Space, 3) + SpcChar.Vertical);
+                            else
+                                visOut.Append(new string(SpcChar.Space, 5));
                     }
+                    visOut.Append(SpcChar.Vertical + new string(SpcChar.Space, 1) + (1.0 - (double)i / Settings.graphHeight).ToString("0.00") + Environment.NewLine);
                 }
-                visOut.Append(new string(SpcChar.Space, 3) +(1.0 - (double)i / height) + Environment.NewLine);
-            }
-            for (int i = 0; i < nBins; i++)
-            {
-                if (data[i] > 0)
-                { 
-                    visOut.Append(SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, 3) + SpcChar.ThreeWayUp); 
-                } 
+                if (h == data.Length - 1)
+                    visOut.Append(SpcChar.LowerLeft);
                 else
+                    visOut.Append(SpcChar.ThreeWayRight);
+
+                for (int i = 0; i < Settings.nBins; i++)
                 {
-                    visOut.Append (new string(SpcChar.Horizontal,5));
+                    if (nResult[i] > 0)
+                        visOut.Append(SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, 3) + SpcChar.ThreeWayUp);
+                    else
+                        visOut.Append(new string(SpcChar.Horizontal, 5));
                 }
+                if (h == data.Length - 1)
+                    visOut.Append(SpcChar.LowerRight);
+                else
+                    visOut.Append(SpcChar.ThreeWayLeft);
+                visOut.Append(Environment.NewLine);
             }
-                return visOut.ToString();
+            if (Settings.nBins > 2)
+                visOut.Append(SpcChar.Space + cutoffs[0].ToString("0.00") + "<" + new string(SpcChar.Space, Settings.nBins * 5 - 11) + ">" + cutoffs[cutoffs.Length - 1].ToString("0.00") + Environment.NewLine);
+            
+            return visOut.ToString();
         }
     }
 

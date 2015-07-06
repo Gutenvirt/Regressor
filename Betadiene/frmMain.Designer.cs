@@ -129,7 +129,6 @@
             this.exportDataToolStripMenuItem.Name = "exportDataToolStripMenuItem";
             this.exportDataToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exportDataToolStripMenuItem.Text = "Export Data...";
-            this.exportDataToolStripMenuItem.Click += new System.EventHandler(this.exportDataToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -198,14 +197,12 @@
             this.aNOVAToolStripMenuItem.Name = "aNOVAToolStripMenuItem";
             this.aNOVAToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.aNOVAToolStripMenuItem.Text = "ANOVA - One way";
-            this.aNOVAToolStripMenuItem.Click += new System.EventHandler(this.aNOVAToolStripMenuItem_Click);
             // 
             // correlationCoefficientsToolStripMenuItem
             // 
             this.correlationCoefficientsToolStripMenuItem.Name = "correlationCoefficientsToolStripMenuItem";
             this.correlationCoefficientsToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
             this.correlationCoefficientsToolStripMenuItem.Text = "Correlation Coefficients";
-            this.correlationCoefficientsToolStripMenuItem.Click += new System.EventHandler(this.correlationCoefficientsToolStripMenuItem_Click);
             // 
             // regressionToolStripMenuItem
             // 
@@ -220,7 +217,6 @@
             this.linearOLSToolStripMenuItem.Name = "linearOLSToolStripMenuItem";
             this.linearOLSToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.linearOLSToolStripMenuItem.Text = "Linear (OLS)";
-            this.linearOLSToolStripMenuItem.Click += new System.EventHandler(this.linearOLSToolStripMenuItem_Click);
             // 
             // dataToolStripMenuItem
             // 
@@ -257,14 +253,12 @@
             this.showTableToolStripMenuItem.Name = "showTableToolStripMenuItem";
             this.showTableToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.showTableToolStripMenuItem.Text = "Show Table";
-            this.showTableToolStripMenuItem.Click += new System.EventHandler(this.showTableToolStripMenuItem_Click);
             // 
             // integrateToolStripMenuItem
             // 
             this.integrateToolStripMenuItem.Name = "integrateToolStripMenuItem";
             this.integrateToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.integrateToolStripMenuItem.Text = "Integrate";
-            this.integrateToolStripMenuItem.Click += new System.EventHandler(this.integrateToolStripMenuItem_Click);
             // 
             // generateColumnToolStripMenuItem
             // 

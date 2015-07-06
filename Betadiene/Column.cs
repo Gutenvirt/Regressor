@@ -35,7 +35,9 @@ namespace Betadiene
 
         public int Size { get; set; }
         public int UniqueValues { get; set; }
-        public int MissingValues {get; set;}
+        public int MissingValues {get; set;} //implement
+
+        public bool Sorted { get; set; }
         
         public double Min { get; set; }
         public double Q1 { get; set; }
@@ -52,6 +54,7 @@ namespace Betadiene
             this.Heading = heading.Replace(" ",string.Empty);
             this.Size  = data.GetLength(0);
             this._Storage = new double[Size];
+            this.Sorted = false;
             
             data.CopyTo(_Storage, 0);//add missing data NAN here!@@@@@@@@@@@@@@
             Array.Sort(data);
@@ -110,6 +113,18 @@ namespace Betadiene
         public double[] ColumnToArray()
         {
             return _Storage;
+        }
+
+        public void Sort()
+        {
+            if (Sorted == false)
+                Array.Sort(this._Storage);
+            else
+                if (this[0] < this[1])
+                    Array.Reverse(this._Storage);
+                else
+                    Array.Sort(this._Storage);
+            this.Sorted = true;
         }
     }
 }

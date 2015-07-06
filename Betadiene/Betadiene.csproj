@@ -62,6 +62,7 @@
       <DependentUpon>frmGenColumnDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Graphics.cs" />
+    <Compile Include="MathsLib.cs" />
     <Compile Include="SpcChar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
