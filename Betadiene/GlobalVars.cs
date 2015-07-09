@@ -18,9 +18,11 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+
 namespace Betadiene
 {
-    public static class Settings
+    public static class GlobalVars
     {
 
         public static int CellLength = 12;
@@ -32,5 +34,8 @@ namespace Betadiene
         public static int GraphWidth = 35;
         public static int GraphHeight = 15;
         public static int NBins = 10;
+
+
+        public static Dictionary<string, int> VariableList = new Dictionary<string, int>();
     }
 }

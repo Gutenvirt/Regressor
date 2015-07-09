@@ -40,7 +40,7 @@ namespace Betadiene
 
         public string InternalMessage { get; set; }
 
-        public Dictionary<string, int> VariableList = new Dictionary<string, int>();
+
 
         //add property missing data points
 
@@ -53,13 +53,13 @@ namespace Betadiene
         public void AddColumn(string[] data, string heading = "")
         {
             if (heading == "" | heading == string.Empty)
-                heading = Settings.HeadingPrefix + _indexer;
+                heading = GlobalVars.HeadingPrefix + _indexer;
                 _strField.Add(new StrColumn(data, heading));
 
-            if (VariableList.ContainsKey(heading))
+            if (GlobalVars.VariableList.ContainsKey(heading))
                 heading += _indexer;
 
-            VariableList.Add(heading, _indexer);
+            GlobalVars.VariableList.Add(heading, _indexer);
 
             _indexer++;
             _length = data.GetLength(0);
@@ -68,13 +68,13 @@ namespace Betadiene
         public void AddColumn(double[] data, string heading = "")
         {
             if (string.IsNullOrEmpty(heading))
-                heading = Settings.HeadingPrefix + _indexer;
+                heading = GlobalVars.HeadingPrefix + _indexer;
             _dblField.Add(new DblColumn(data, heading));
-            
-            if (VariableList.ContainsKey(heading))
+
+            if (GlobalVars.VariableList.ContainsKey(heading))
                 heading += _indexer;
-            
-            VariableList.Add(heading, _indexer);
+
+            GlobalVars.VariableList.Add(heading, _indexer);
 
             _indexer++;
             _length = data.GetLength(0);
@@ -87,7 +87,7 @@ namespace Betadiene
 
             foreach (int i in indices)
             {
-                VariableList.Remove(this[i].Heading);
+                GlobalVars.VariableList.Remove(this[i].Heading);
                 
                 _dblField.RemoveAt(i);
                 _indexer--;

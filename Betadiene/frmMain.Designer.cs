@@ -305,7 +305,6 @@ namespace Betadiene
             this.lblCmdHistory.Size = new System.Drawing.Size(160, 197);
             this.lblCmdHistory.TabIndex = 3;
             this.lblCmdHistory.TabStop = false;
-            this.lblCmdHistory.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lblCmdHistory_MouseDoubleClick);
             // 
             // lbVariables
             // 
@@ -318,10 +317,10 @@ namespace Betadiene
             this.lbVariables.Size = new System.Drawing.Size(160, 314);
             this.lbVariables.TabIndex = 2;
             this.lbVariables.TabStop = false;
-            this.lbVariables.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lbVariables_MouseDoubleClick);
             // 
             // txtCmdBox
             // 
+            this.txtCmdBox.AcceptsReturn = true;
             this.txtCmdBox.AcceptsTab = true;
             this.txtCmdBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtCmdBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
@@ -334,10 +333,10 @@ namespace Betadiene
             this.txtCmdBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtCmdBox.Size = new System.Drawing.Size(819, 50);
             this.txtCmdBox.TabIndex = 0;
-            this.txtCmdBox.Text = "import c:\\counting.csv";
-            this.txtCmdBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCmdBox_KeyUp);
+            this.txtCmdBox.Text = "import counting,firstrow";
+            this.txtCmdBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCmdBox_KeyDown);
             // 
-            // frmMain
+            // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

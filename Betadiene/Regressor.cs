@@ -37,9 +37,9 @@ namespace Betadiene
         private static double[] _resid;
         private static double[] _yHat;
 
-        private static double[] _totalDeviation;
-        private static double[] _explainedDeviation;
-        private static double[] _unExplainedDeviation;
+        //private static double[] _totalDeviation;
+        //private static double[] _explainedDeviation;
+        //private static double[] _unExplainedDeviation;
 
         private static string[] _variableHeadings;
 
@@ -61,8 +61,8 @@ namespace Betadiene
             _resid = new double[_nObs];
             _yHat = new double[_nObs];
 
-            _explainedDeviation = new double[_nObs];
-            _unExplainedDeviation = new double[_nObs];
+            //_explainedDeviation = new double[_nObs];
+           // _unExplainedDeviation = new double[_nObs];
 
             double globalSumOfSquares = 0;
             double pGlobalSumOfSquares = 10;

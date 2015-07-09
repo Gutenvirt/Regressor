@@ -59,18 +59,18 @@ namespace Betadiene
                     {
                         var size = 1.0;
                         double.TryParse(oTmp[i].Substring(5, oTmp[i].Length - 5), out size);
-                        Settings.GraphHeight = (int) (Settings.GraphHeight*size);
-                        Settings.GraphWidth = (int) (Settings.GraphWidth*size);
+                        GlobalVars.GraphHeight = (int) (GlobalVars.GraphHeight*size);
+                        GlobalVars.GraphWidth = (int) (GlobalVars.GraphWidth*size);
                         continue;
                     }
                     if (oTmp[i].IndexOf("width=") > -1)
                     {
-                        int.TryParse(oTmp[i].Substring(6, oTmp[i].Length - 6), out Settings.GraphWidth);
+                        int.TryParse(oTmp[i].Substring(6, oTmp[i].Length - 6), out GlobalVars.GraphWidth);
                         continue;
                     }
                     if (oTmp[i].IndexOf("height=") > -1)
                     {
-                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out Settings.GraphHeight);
+                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out GlobalVars.GraphHeight);
                         continue;
                     }
                     if (oTmp[i].IndexOf("yline=") > -1)
@@ -95,13 +95,13 @@ namespace Betadiene
                     min = data[i].Min;
             }
 
-            var plot = new char[Settings.GraphHeight, Settings.GraphWidth];
+            var plot = new char[GlobalVars.GraphHeight, GlobalVars.GraphWidth];
 
-            yline = Settings.GraphHeight*(yline);
+            yline = GlobalVars.GraphHeight*(yline);
 
-            for (var i = 0; i < Settings.GraphWidth; i++) //create grid of null (space) characters
+            for (var i = 0; i < GlobalVars.GraphWidth; i++) //create grid of null (space) characters
             {
-                for (var j = 0; j < Settings.GraphHeight; j++)
+                for (var j = 0; j < GlobalVars.GraphHeight; j++)
                 {
                     plot[j, i] = SpcChar.Space;
                     if (j == (int) (yline))
@@ -110,11 +110,11 @@ namespace Betadiene
             }
 
 
-            var mappedColX = MathsLib.MapToRange(data[0], 0, Settings.GraphWidth - 1);
+            var mappedColX = MathsLib.MapToRange(data[0], 0, GlobalVars.GraphWidth - 1);
 
             for (var h = 1; h < data.Length; h++) //iterate through all columns
             {
-                var mappedColY = MathsLib.MapToRange(data[h], min, max, 0, Settings.GraphHeight - 1);
+                var mappedColY = MathsLib.MapToRange(data[h], min, max, 0, GlobalVars.GraphHeight - 1);
 
                 for (var i = 0; i < dataSize; i++) //map x,y points from columns to grid above
                 {
@@ -134,12 +134,12 @@ namespace Betadiene
             var repDataTally = 0.0;
             var sOut = new StringBuilder();
 
-            sOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, Settings.GraphWidth) + SpcChar.UpperRight +
+            sOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, GlobalVars.GraphWidth) + SpcChar.UpperRight +
                         Environment.NewLine);
-            for (var i = Settings.GraphHeight - 1; i > -1; i--)
+            for (var i = GlobalVars.GraphHeight - 1; i > -1; i--)
             {
                 sOut.Append(SpcChar.Vertical);
-                for (var j = 0; j < Settings.GraphWidth; j++)
+                for (var j = 0; j < GlobalVars.GraphWidth; j++)
                 {
                     sOut.Append(plot[i, j]);
                     if (plot[i, j] != SpcChar.Space && plot[i, j] != SpcChar.Dot)
@@ -148,7 +148,7 @@ namespace Betadiene
 
                 sOut.Append(SpcChar.Vertical);
 
-                if (i == Settings.GraphHeight - 1)
+                if (i == GlobalVars.GraphHeight - 1)
                     sOut.Append(max.ToString("0.00"));
 
                 if (i == 0)
@@ -157,15 +157,15 @@ namespace Betadiene
                 sOut.Append(Environment.NewLine);
             }
 
-            sOut.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, Settings.GraphWidth) + SpcChar.LowerRight +
+            sOut.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, GlobalVars.GraphWidth) + SpcChar.LowerRight +
                         Environment.NewLine);
 
-            if (Settings.GraphWidth > 9)
+            if (GlobalVars.GraphWidth > 9)
                 sOut.Append(SpcChar.Space + data[0].Min.ToString("0.00") +
-                            new string(SpcChar.Space, Settings.GraphWidth - 9) + data[0].Max.ToString("0.00") +
+                            new string(SpcChar.Space, GlobalVars.GraphWidth - 9) + data[0].Max.ToString("0.00") +
                             Environment.NewLine);
             else
-                sOut.Append(new string(SpcChar.Space, Settings.GraphWidth) + Environment.NewLine);
+                sOut.Append(new string(SpcChar.Space, GlobalVars.GraphWidth) + Environment.NewLine);
 
             repDataTally = repDataTally/((data.Length - 1)*data[0].Size)*100.0;
                 //two columns per scatter to only 50% is tally.
@@ -186,15 +186,15 @@ namespace Betadiene
                 for (var i = 0; i < oTmp.Length; i++)
                 {
                     if (oTmp[i].IndexOf("bins=") > -1)
-                        int.TryParse(oTmp[i].Substring(5, oTmp[i].Length - 5), out Settings.NBins);
+                        int.TryParse(oTmp[i].Substring(5, oTmp[i].Length - 5), out GlobalVars.NBins);
                     if (oTmp[i].IndexOf("height=") > -1)
-                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out Settings.GraphHeight);
+                        int.TryParse(oTmp[i].Substring(7, oTmp[i].Length - 7), out GlobalVars.GraphHeight);
 
                     //add type percent, density, freq 
                 }
             }
 
-            var cutoffs = new double[Settings.NBins];
+            var cutoffs = new double[GlobalVars.NBins];
 
             var max = data[0].Max;
             var min = data[0].Min;
@@ -207,30 +207,30 @@ namespace Betadiene
                     min = data[i].Min;
             }
 
-            var step = (max - min)/Settings.NBins;
+            var step = (max - min)/GlobalVars.NBins;
 
-            for (var l = 0; l < Settings.NBins; l++)
+            for (var l = 0; l < GlobalVars.NBins; l++)
             {
                 cutoffs[l] = l*step + min;
             }
 
             var visOut = new StringBuilder();
 
-            visOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, Settings.NBins*5) + SpcChar.UpperRight +
+            visOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, GlobalVars.NBins*5) + SpcChar.UpperRight +
                           Environment.NewLine);
 
-            var nResult = new double[Settings.NBins];
+            var nResult = new double[GlobalVars.NBins];
 
             for (var h = 0; h < data.Length; h++)
             {
                 for (var i = 0; i < data[h].Size; i++)
                 {
-                    if (data[h][i] > cutoffs[Settings.NBins - 1])
+                    if (data[h][i] > cutoffs[GlobalVars.NBins - 1])
                     {
-                        nResult[Settings.NBins - 1]++;
+                        nResult[GlobalVars.NBins - 1]++;
                         continue;
                     }
-                    for (var j = 1; j < Settings.NBins - 1; j++)
+                    for (var j = 1; j < GlobalVars.NBins - 1; j++)
                     {
                         if ((data[h][i] >= cutoffs[j]) && (data[h][i] < cutoffs[j + 1]))
                         {
@@ -246,7 +246,7 @@ namespace Betadiene
                 if (type == HType.Density)
                 {
                     var divmax = 1.0/nResult.Max();
-                    for (var i = 0; i < Settings.NBins; i++)
+                    for (var i = 0; i < GlobalVars.NBins; i++)
                     {
                         nResult[i] = nResult[i]*divmax;
                     }
@@ -254,30 +254,30 @@ namespace Betadiene
                 if (type == HType.Percent)
                 {
                     var total = 1.0/data[0].Size;
-                    for (var i = 0; i < Settings.NBins; i++)
+                    for (var i = 0; i < GlobalVars.NBins; i++)
                     {
                         nResult[i] = nResult[i]*total;
                     }
                 }
 
-                for (var i = 0; i < Settings.GraphHeight; i++) // down
+                for (var i = 0; i < GlobalVars.GraphHeight; i++) // down
                 {
                     visOut.Append(SpcChar.Vertical);
-                    for (var j = 0; j < Settings.NBins; j++) // across
+                    for (var j = 0; j < GlobalVars.NBins; j++) // across
                     {
-                        if ((int) (Settings.GraphHeight - nResult[j]*Settings.GraphHeight) == i)
+                        if ((int) (GlobalVars.GraphHeight - nResult[j]*GlobalVars.GraphHeight) == i)
                             visOut.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, 3) + SpcChar.UpperRight);
-                        else if (i > Settings.GraphHeight - nResult[j]*Settings.GraphHeight)
+                        else if (i > GlobalVars.GraphHeight - nResult[j]*GlobalVars.GraphHeight)
                             visOut.Append(SpcChar.Vertical + new string(SpcChar.Space, 3) + SpcChar.Vertical);
                         else
                             visOut.Append(new string(SpcChar.Space, 5));
                     }
                     visOut.Append(SpcChar.Vertical + new string(SpcChar.Space, 1) +
-                                  (1.0 - (double) i/Settings.GraphHeight).ToString("0.00") + Environment.NewLine);
+                                  (1.0 - (double) i/GlobalVars.GraphHeight).ToString("0.00") + Environment.NewLine);
                 }
                 visOut.Append(h == data.Length - 1 ? SpcChar.LowerLeft : SpcChar.ThreeWayRight);
 
-                for (var i = 0; i < Settings.NBins; i++)
+                for (var i = 0; i < GlobalVars.NBins; i++)
                 {
                     if (nResult[i] > 0)
                         visOut.Append(SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, 3) + SpcChar.ThreeWayUp);
@@ -287,9 +287,9 @@ namespace Betadiene
                 visOut.Append(h == data.Length - 1 ? SpcChar.LowerRight : SpcChar.ThreeWayLeft);
                 visOut.Append(Environment.NewLine);
             }
-            if (Settings.NBins > 2)
+            if (GlobalVars.NBins > 2)
                 visOut.Append(SpcChar.Space + cutoffs[0].ToString("0.00") + "<" +
-                              new string(SpcChar.Space, Settings.NBins*5 - 11) + ">" +
+                              new string(SpcChar.Space, GlobalVars.NBins*5 - 11) + ">" +
                               cutoffs[cutoffs.Length - 1].ToString("0.00") + Environment.NewLine);
 
             return visOut.ToString();

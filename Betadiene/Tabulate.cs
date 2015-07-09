@@ -34,17 +34,17 @@ namespace Betadiene
             {
                 if (center)
                 {
-                    if (txtData[i].Length > Settings.CellLength - 1)
-                        txtData[i] = " " + txtData[i][0] + txtData[i].Substring(1, Settings.CellLength - 4) + '~' + txtData[i][txtData[i].Length - 1]; // + " ";
+                    if (txtData[i].Length > GlobalVars.CellLength - 1)
+                        txtData[i] = " " + txtData[i][0] + txtData[i].Substring(1, GlobalVars.CellLength - 4) + '~' + txtData[i][txtData[i].Length - 1]; // + " ";
                     else
-                        txtData[i] = new string(' ', (Settings.CellLength - txtData[i].Length) / 2) + txtData[i] + new string(' ', (Settings.CellLength - txtData[i].Length) / 2);
+                        txtData[i] = new string(' ', (GlobalVars.CellLength - txtData[i].Length) / 2) + txtData[i] + new string(' ', (GlobalVars.CellLength - txtData[i].Length) / 2);
                 }
                 else
                 {
-                    if (txtData[i].Length > Settings.CellLength)
-                        txtData[i] = txtData[i][0] + txtData[i].Substring(1, Settings.CellLength - 3) + '~' + txtData[i][txtData[i].Length - 1];
+                    if (txtData[i].Length > GlobalVars.CellLength)
+                        txtData[i] = txtData[i][0] + txtData[i].Substring(1, GlobalVars.CellLength - 3) + '~' + txtData[i][txtData[i].Length - 1];
                     else
-                        txtData[i] = txtData[i].PadRight(Settings.CellLength);
+                        txtData[i] = txtData[i].PadRight(GlobalVars.CellLength);
                 }
             }
             return txtData;
@@ -74,7 +74,7 @@ namespace Betadiene
             int nCols = data.GetLength(1);
             int nRows = data.GetLength(0);
 
-            int recordLabel = Settings.CellLength;
+            int recordLabel = GlobalVars.CellLength;
 
             if (colHeading != null)
                 colHeading = Truncate(colHeading, true);
@@ -85,9 +85,9 @@ namespace Betadiene
                 recordLabel = (int)Math.Log10(data.GetLength(0))+3;
         
             if (isFixed)
-                Settings.StrFormat = "{0," + Settings.CellLength.ToString() + ":0." + new string('0', Settings.CellPrecision) + "}";
+                GlobalVars.StrFormat = "{0," + GlobalVars.CellLength.ToString() + ":0." + new string('0', GlobalVars.CellPrecision) + "}";
             else
-                Settings.StrFormat = "{0," + Settings.CellLength.ToString() + ":0." + new string('#', Settings.CellPrecision) + "}";
+                GlobalVars.StrFormat = "{0," + GlobalVars.CellLength.ToString() + ":0." + new string('#', GlobalVars.CellPrecision) + "}";
 
             var result = new StringBuilder();
 
@@ -97,7 +97,7 @@ namespace Betadiene
 
 
             //Heading
-            result.Append(new string(' ', recordLabel + 1) + SpcChar.UpperLeft + new string(SpcChar.Horizontal, (nCols) * Settings.CellLength) + SpcChar.UpperRight + Environment.NewLine);
+            result.Append(new string(' ', recordLabel + 1) + SpcChar.UpperLeft + new string(SpcChar.Horizontal, (nCols) * GlobalVars.CellLength) + SpcChar.UpperRight + Environment.NewLine);
 
             if (colHeading != null)
             {
@@ -105,11 +105,11 @@ namespace Betadiene
                 int colCount = 0;
                 while (colCount < nCols)
                 {
-                    result.Append(colHeading[colCount].PadLeft(Settings.CellLength));
+                    result.Append(colHeading[colCount].PadLeft(GlobalVars.CellLength));
                     colCount++;
                 }
                 result.Append(SpcChar.Vertical + Environment.NewLine);
-                result.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, recordLabel) + SpcChar.FourWay + new string(SpcChar.Horizontal, (nCols) * Settings.CellLength) + SpcChar.ThreeWayLeft + Environment.NewLine);
+                result.Append(SpcChar.UpperLeft + new string(SpcChar.Horizontal, recordLabel) + SpcChar.FourWay + new string(SpcChar.Horizontal, (nCols) * GlobalVars.CellLength) + SpcChar.ThreeWayLeft + Environment.NewLine);
             }
 
             //Rows
@@ -125,16 +125,16 @@ namespace Betadiene
                 while (colCount < nCols)
                 {
                     if (double.IsNaN(data[rowCount, colCount]))
-                        result.Append(new string(' ', Settings.CellLength - 1) + '.');
+                        result.Append(new string(' ', GlobalVars.CellLength - 1) + '.');
                     else
-                        result.Append(string.Format(Settings.StrFormat, data[rowCount, colCount]));
+                        result.Append(string.Format(GlobalVars.StrFormat, data[rowCount, colCount]));
                     colCount++;
                 }
                 result.Append(SpcChar.Vertical + Environment.NewLine);
                 rowCount++;
             }
 
-            result.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, recordLabel) + SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, (nCols) * Settings.CellLength) + SpcChar.LowerRight + Environment.NewLine);
+            result.Append(SpcChar.LowerLeft + new string(SpcChar.Horizontal, recordLabel) + SpcChar.ThreeWayUp + new string(SpcChar.Horizontal, (nCols) * GlobalVars.CellLength) + SpcChar.LowerRight + Environment.NewLine);
 
             return result.ToString();
         }
