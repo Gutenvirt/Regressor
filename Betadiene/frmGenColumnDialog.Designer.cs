@@ -1,11 +1,14 @@
-﻿namespace Betadiene
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Betadiene
 {
-    partial class frmGenColumnDialog
+    partial class FrmGenColumnDialog
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -161,7 +164,7 @@
             this.Controls.Add(this.cmbVar1);
             this.Controls.Add(this.txtTrue);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Name = "frmGenColumnDialog";
+            this.Name = "FrmGenColumnDialog";
             this.Text = "GenColumnDialog";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -170,15 +173,15 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtTrue;
-        private System.Windows.Forms.ComboBox cmbVar1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbOps;
-        private System.Windows.Forms.TextBox txtFalse;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button cmdGenerate;
-        private System.Windows.Forms.ComboBox cmbVar2;
-        private System.Windows.Forms.Label label3;
+        private TextBox txtTrue;
+        private ComboBox cmbVar1;
+        private Label label1;
+        private ComboBox cmbOps;
+        private TextBox txtFalse;
+        private Label label2;
+        private TextBox textBox2;
+        private Button cmdGenerate;
+        private ComboBox cmbVar2;
+        private Label label3;
     }
 }

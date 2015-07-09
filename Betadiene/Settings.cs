@@ -18,25 +18,19 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Betadiene
 {
     public static class Settings
     {
 
-        public static int _cellLength = 12;
-        public static int _cellPrecision = 4;
-        public static string strFormat = "{0," + _cellLength.ToString() + ":0." + new string('#', _cellPrecision) + "}";
-        public static string headingPrefix = "v";
-        public static string workingDir = "c:\\";
-        public static string defaultExt = ".csv";
-        public static int graphWidth = 35;
-        public static int graphHeight = 15;
-        public static int nBins = 10;
+        public static int CellLength = 12;
+        public static int CellPrecision = 4;
+        public static string StrFormat = "{0," + CellLength + ":0." + new string('#', CellPrecision) + "}";
+        public static string HeadingPrefix = "v";
+        public static string WorkingDir = "c:\\";
+        public static string DefaultExt = ".csv";
+        public static int GraphWidth = 35;
+        public static int GraphHeight = 15;
+        public static int NBins = 10;
     }
 }

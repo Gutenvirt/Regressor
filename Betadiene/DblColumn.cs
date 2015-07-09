@@ -20,16 +20,13 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Betadiene
 {
-    public class Column
+    public class DblColumn
     {
-        private double[] _Storage;
+        private double[] _storage;
 
         public string Heading { get; set; }
 
@@ -49,82 +46,96 @@ namespace Betadiene
         public double Sum { get; set; }
         public double StndDev { get; set; }
 
-    public Column(double[] data, string heading)
+    public DblColumn(double[] data, string heading)
         {
-            this.Heading = heading.Replace(" ",string.Empty);
-            this.Size  = data.GetLength(0);
-            this._Storage = new double[Size];
-            this.Sorted = false;
+            Heading = heading.Replace(" ",string.Empty);
+            Size  = data.GetLength(0);
+            _storage = new double[Size];
+            Sorted = false;
             
-            data.CopyTo(_Storage, 0);//add missing data NAN here!@@@@@@@@@@@@@@
+            data.CopyTo(_storage, 0);//add missing data NAN here!@@@@@@@@@@@@@@
             Array.Sort(data);
 
-            this.Min = data[0];
-            this.Q1 = this.Size % 2 != 0 ? data[this.Size / 4] : (data[this.Size / 4] + data[this.Size / 4 - 1]) / 2;
-            this.Median= this.Size % 2 != 0 ? data[this.Size / 2] : (data[this.Size / 2] + data[this.Size / 2 - 1]) / 2;
-            this.Q3 = this.Size % 2 != 0 ? data[this.Size /4*3] : (data[this.Size /4*3] + data[this.Size / 4*3 - 1]) / 2;
-            this.Max = data[this.Size - 1];
-            this.Sum = data.Sum();
-            this.Mean = this.Sum / this.Size;
-            this.Variance = CalculateVariance();
-            this.StndDev = CalculateStndDev();
-            this.UniqueValues = data.Distinct().Count();
+            Min = data[data.Length - 1];
+            
+            int counter = 0;
+            for (int i = 0; i < Size; i++ )
+            {
+                if (!double.IsNaN(this[i]))
+                {
+                    Sum += this[i];
+                    if (this[i] < Min)
+                        Min = this[i];
+                    counter++;
+                }
+            }
+            MissingValues = Size - counter;    
+            Size = counter;
+
+            Min = data[0];
+            Q1 = Size % 2 != 0 ? data[Size / 4] : (data[Size / 4] + data[Size / 4 - 1]) / 2;
+            Median= Size % 2 != 0 ? data[Size / 2] : (data[Size / 2] + data[Size / 2 - 1]) / 2;
+            Q3 = Size % 2 != 0 ? data[Size /4*3] : (data[Size /4*3] + data[Size / 4*3 - 1]) / 2;
+            Max = data[Size - 1];
+            Mean = Sum / Size;
+            Variance = CalculateVariance();
+            StndDev = CalculateStndDev();
+            UniqueValues = data.Distinct().Count();
     }
 
         public double this[int i]
         {
             get
             {
-                if (i < Size)
-                    return _Storage[i];
-                else
-                    return double.NaN;
+                if (i < Size && !double.IsNaN(_storage[i]))
+                    return _storage[i];
+                return double.NaN;
             }
-            set { _Storage[i] = value; }
+            set { _storage[i] = value; }
         }
 
         private double CalculateVariance()
         {
             var result = new double();
-            for (int i = 0; i < this.Size; i++)
+            for (int i = 0; i < Size; i++)
             {
-                result += (this[i] - this.Mean) * (this[i] - this.Mean);
+                result += (this[i] - Mean) * (this[i] - Mean);
             }
-            return result / (this.Size - 1);
+            return result / (Size - 1);
         }
 
         private double CalculateStndDev()
         {
-            return Math.Sqrt(this.Variance);
+            return Math.Sqrt(Variance);
         }      
 
         public double[] StandardizeValues ()
         {
-            var result = new double[this.Size];
-            double recip = 1.0/this.StndDev;
+            var result = new double[Size];
+            double recip = 1.0/StndDev;
 
-            for (int i = 0; i < this.Size ; i++)
+            for (int i = 0; i < Size ; i++)
             {
-                result[i] = (this[i] - this.Mean) * recip;
+                result[i] = (this[i] - Mean) * recip;
             }
             return result;
         }
 
         public double[] ColumnToArray()
         {
-            return _Storage;
+            return _storage;
         }
 
         public void Sort()
         {
             if (Sorted == false)
-                Array.Sort(this._Storage);
+                Array.Sort(_storage);
             else
                 if (this[0] < this[1])
-                    Array.Reverse(this._Storage);
+                    Array.Reverse(_storage);
                 else
-                    Array.Sort(this._Storage);
-            this.Sorted = true;
+                    Array.Sort(_storage);
+            Sorted = true;
         }
     }
 }

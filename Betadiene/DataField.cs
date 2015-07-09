@@ -19,22 +19,17 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Common;
-using System.Diagnostics;
 
 namespace Betadiene
 {
     public class DataField
     {
-        private List<Column> _dblField = new List<Column>();
+        private List<DblColumn> _dblField = new List<DblColumn>();
+        private List<StrColumn> _strField = new List<StrColumn>();
 
-        private int _indexer = 0;
-        private int _length = 0;
+        private int _indexer;
+        private int _length;
 
         public int NumberVariables { get { return _indexer; } }
         public int NumberObservations { get { return _length; } }
@@ -43,7 +38,9 @@ namespace Betadiene
         public int[] SelectedColumns { get; set; }
         public int[] AllColumns { get; set; }
 
-        public Dictionary<String, int> VariableList = new Dictionary<string, int>();
+        public string InternalMessage { get; set; }
+
+        public Dictionary<string, int> VariableList = new Dictionary<string, int>();
 
         //add property missing data points
 
@@ -53,24 +50,37 @@ namespace Betadiene
             AllColumns = new int[] { };
         }
 
-        public void AddColumn(double[] data, string heading = "")
+        public void AddColumn(string[] data, string heading = "")
         {
             if (heading == "" | heading == string.Empty)
-                heading = Settings.headingPrefix + _indexer.ToString();
-            _dblField.Add(new Column(data, heading));
+                heading = Settings.HeadingPrefix + _indexer;
+                _strField.Add(new StrColumn(data, heading));
+
+            if (VariableList.ContainsKey(heading))
+                heading += _indexer;
+
+            VariableList.Add(heading, _indexer);
+
+            _indexer++;
+            _length = data.GetLength(0);
+        }
+
+        public void AddColumn(double[] data, string heading = "")
+        {
+            if (string.IsNullOrEmpty(heading))
+                heading = Settings.HeadingPrefix + _indexer;
+            _dblField.Add(new DblColumn(data, heading));
             
             if (VariableList.ContainsKey(heading))
                 heading += _indexer;
             
             VariableList.Add(heading, _indexer);
 
-            // need to add check for duplicate columns and rename it with a modifier!!!!!!!!!!
-
             _indexer++;
             _length = data.GetLength(0);
         }
 
-        public void drop(int[] indices)
+        public void Drop(int[] indices)
         {
             if (indices.Length == 0)
                 return;
@@ -84,7 +94,7 @@ namespace Betadiene
             }
         }
 
-        public Column this[int col]
+        public DblColumn this[int col]
         {
             get { return _dblField[col]; }
         }
@@ -99,12 +109,12 @@ namespace Betadiene
             if (indices.Length == 0)
                 indices = AllColumns;
 
-            double[,] result = new double[this.NumberObservations, indices.Length];
+            double[,] result = new double[NumberObservations, indices.Length];
 
             int count = 0;
             foreach (int col in indices)
             {
-                for (int j = 0; j < this.NumberObservations; j++)
+                for (int j = 0; j < NumberObservations; j++)
                 {
                     result[j, count] = this[col][j];
                 }
@@ -113,12 +123,12 @@ namespace Betadiene
             return result;
         }
 
-        public Column[] ToField(int[] indices)
+        public DblColumn[] ToField(int[] indices)
         {
             if (indices.Length == 0)
                 indices = AllColumns;
 
-            Column[] result = new Column[indices.Length];
+            DblColumn[] result = new DblColumn[indices.Length];
             for (int i = 0; i < indices.Length; i++)
             {
                 result[i] = this[indices[i]];
@@ -131,20 +141,22 @@ namespace Betadiene
             if (indices.Length == 0)
                 indices = AllColumns;
 
-            double[,] result = new double[10, indices.Length];
+            double[,] result = new double[12, indices.Length];
 
             for (int i = 0; i < indices.Length; i++)
             {
-                result[0, i] = this[indices[i]].UniqueValues;
-                result[1, i] = this[indices[i]].Min;
-                result[2, i] = this[indices[i]].Q1;
-                result[3, i] = this[indices[i]].Mean;
-                result[4, i] = this[indices[i]].Median;
-                result[5, i] = this[indices[i]].Q3;
-                result[6, i] = this[indices[i]].Max;
-                result[7, i] = this[indices[i]].Sum;
-                result[8, i] = this[indices[i]].Variance;
-                result[9, i] = this[indices[i]].StndDev;
+                result[0, i] = this[indices[i]].Size;
+                result[1, i] = this[indices[i]].UniqueValues;
+                result[2, i] = this[indices[i]].MissingValues;
+                result[3, i] = this[indices[i]].Min;
+                result[4, i] = this[indices[i]].Q1;
+                result[5, i] = this[indices[i]].Mean;
+                result[6, i] = this[indices[i]].Median;
+                result[7, i] = this[indices[i]].Q3;
+                result[8, i] = this[indices[i]].Max;
+                result[9, i] = this[indices[i]].Sum;
+                result[10, i] = this[indices[i]].Variance;
+                result[11, i] = this[indices[i]].StndDev;
             }
 
             return result;

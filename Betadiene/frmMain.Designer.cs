@@ -1,11 +1,14 @@
-﻿namespace Betadiene
+﻿using System.ComponentModel;
+using System.Windows.Forms;
+
+namespace Betadiene
 {
-    partial class frmMain
+    partial class FrmMain
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -287,7 +290,6 @@
             this.operationToolStripMenuItem.Name = "operationToolStripMenuItem";
             this.operationToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.operationToolStripMenuItem.Text = "Operation...";
-            this.operationToolStripMenuItem.Click += new System.EventHandler(this.operationToolStripMenuItem_Click);
             // 
             // oFD
             // 
@@ -346,7 +348,7 @@
             this.Controls.Add(this.txtOut);
             this.Controls.Add(this.mnBar);
             this.MainMenuStrip = this.mnBar;
-            this.Name = "frmMain";
+            this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Betadiene";
             this.Load += new System.EventHandler(this.frmMain_Load);
@@ -359,40 +361,40 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox txtOut;
-        private System.Windows.Forms.MenuStrip mnBar;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem saveOutputToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem statisticsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem regressionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dataToolStripMenuItem;
-        private System.Windows.Forms.OpenFileDialog oFD;
-        private System.Windows.Forms.ListBox lblCmdHistory;
-        private System.Windows.Forms.ToolStripMenuItem clearScreenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem histogramToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem frequencyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem densityToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem percentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
-        private System.Windows.Forms.ToolStripMenuItem createZScoreToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem descriptiveStatisticsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem linearOLSToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showTableToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem aNOVAToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem correlationCoefficientsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem integrateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem generateColumnToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem fillToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ifToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem operationToolStripMenuItem;
-        private System.Windows.Forms.ListBox lbVariables;
-        private System.Windows.Forms.TextBox txtCmdBox;
-        private System.Windows.Forms.ToolStripMenuItem exportDataToolStripMenuItem;
+        private TextBox txtOut;
+        private MenuStrip mnBar;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem loadDataToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem saveOutputToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem2;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem statisticsToolStripMenuItem;
+        private ToolStripMenuItem regressionToolStripMenuItem;
+        private ToolStripMenuItem dataToolStripMenuItem;
+        private OpenFileDialog oFD;
+        private ListBox lblCmdHistory;
+        private ToolStripMenuItem clearScreenToolStripMenuItem;
+        private ToolStripMenuItem histogramToolStripMenuItem;
+        private ToolStripMenuItem frequencyToolStripMenuItem;
+        private ToolStripMenuItem densityToolStripMenuItem;
+        private ToolStripMenuItem percentToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripMenuItem createZScoreToolStripMenuItem;
+        private ToolStripMenuItem descriptiveStatisticsToolStripMenuItem;
+        private ToolStripMenuItem linearOLSToolStripMenuItem;
+        private ToolStripMenuItem showTableToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem4;
+        private ToolStripMenuItem aNOVAToolStripMenuItem;
+        private ToolStripMenuItem correlationCoefficientsToolStripMenuItem;
+        private ToolStripMenuItem integrateToolStripMenuItem;
+        private ToolStripMenuItem generateColumnToolStripMenuItem;
+        private ToolStripMenuItem fillToolStripMenuItem;
+        private ToolStripMenuItem ifToolStripMenuItem;
+        private ToolStripMenuItem operationToolStripMenuItem;
+        private ListBox lbVariables;
+        private TextBox txtCmdBox;
+        private ToolStripMenuItem exportDataToolStripMenuItem;
     }
 }
 

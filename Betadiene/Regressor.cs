@@ -20,53 +20,49 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Betadiene
 {
     public static class Regressor
     {
-        private static int nObs;
-        private static int nVars;
+        private static int _nObs;
+        private static int _nVars;
 
-        private static double yMean;
+        private static double _yMean;
 
-        private static double[,] x;
-        private static double[] y;
-        private static double[] b;
-        private static double[] resid;
-        private static double[] yHat;
+        private static double[,] _x;
+        private static double[] _y;
+        private static double[] _b;
+        private static double[] _resid;
+        private static double[] _yHat;
 
-        private static double[] totalDeviation;
-        private static double[] explainedDeviation;
-        private static double[] unExplainedDeviation;
+        private static double[] _totalDeviation;
+        private static double[] _explainedDeviation;
+        private static double[] _unExplainedDeviation;
 
-        private static string[] VariableHeadings;
+        private static string[] _variableHeadings;
 
-        public static double[] Coeff { get { return b; } }
+        public static double[] Coeff { get { return _b; } }
 
         public static void Initialize(double[] depVar, double[,] indVar, string[] headings)
         {
-            VariableHeadings = headings;
+            _variableHeadings = headings;
 
-            nObs = depVar.GetLength(0);
-            nVars = indVar.GetLength(0);
+            _nObs = depVar.GetLength(0);
+            _nVars = indVar.GetLength(0);
 
-            yMean = depVar.Average();
+            _yMean = depVar.Average();
 
-            x = indVar;
-            y = depVar;
+            _x = indVar;
+            _y = depVar;
 
-            b = new double[nVars];
-            resid = new double[nObs];
-            yHat = new double[nObs];
+            _b = new double[_nVars];
+            _resid = new double[_nObs];
+            _yHat = new double[_nObs];
 
-            explainedDeviation = new double[nObs];
-            unExplainedDeviation = new double[nObs];
+            _explainedDeviation = new double[_nObs];
+            _unExplainedDeviation = new double[_nObs];
 
             double globalSumOfSquares = 0;
             double pGlobalSumOfSquares = 10;
@@ -76,7 +72,7 @@ namespace Betadiene
             {
                 pGlobalSumOfSquares = globalSumOfSquares;
 
-                for (int z = 0; z < nVars; z++)
+                for (int z = 0; z < _nVars; z++)
                 {
                     globalSumOfSquares = Iterate(z);
                 }
@@ -93,12 +89,12 @@ namespace Betadiene
 
             while (Math.Abs(prevSumSquares - sumSquares) > 0.0001)
             {
-                b[varIndex] += step;
-                for (int i = 0; i < nVars; i++)
+                _b[varIndex] += step;
+                for (int i = 0; i < _nVars; i++)
                 {
-                    for (int j = 0; j < nObs; j++)
+                    for (int j = 0; j < _nObs; j++)
                     {
-                        yHat[j] += b[i] * x[i, j];
+                        _yHat[j] += _b[i] * _x[i, j];
                         //explainedDeviation[j] = (yHat[j] - yMean) * (yHat[j] - yMean);
                         //unExplainedDeviation[j] = (y[j] - yHat[j]) *(y[j] - yHat[j]);
                     }
@@ -106,13 +102,13 @@ namespace Betadiene
 
                 prevSumSquares = sumSquares;
                 sumSquares = 0.0;
-                for (int j = 0; j < nObs; j++)
+                for (int j = 0; j < _nObs; j++)
                 {
-                    resid[j] = y[j] - yHat[j];
-                    yHat[j] = 0.0;
-                    sumSquares += resid[j] * resid[j];
+                    _resid[j] = _y[j] - _yHat[j];
+                    _yHat[j] = 0.0;
+                    sumSquares += _resid[j] * _resid[j];
                 }
-                yHat = new double[nObs];
+                _yHat = new double[_nObs];
                 if ((prevSumSquares - sumSquares) < 0)
                     step = step * (-.5);
             }
@@ -122,9 +118,9 @@ namespace Betadiene
         public static string StringOut()
         {
             string result = string.Empty;
-            for (int i = 0; i < b.GetLength(0); i++)
+            for (int i = 0; i < _b.GetLength(0); i++)
             {
-                result += VariableHeadings[i] + SpcChar.Vertical + "b" + i + "=" + b[i].ToString("0.00000") + Environment.NewLine;
+                result += _variableHeadings[i] + SpcChar.Vertical + "b" + i + "=" + _b[i].ToString("0.00000") + Environment.NewLine;
             }
             return result;
         }
